@@ -55,7 +55,7 @@ export function importBrM(file) {
           return;
         }
         resolve(data);
-      } catch (err) {
+      } catch {
         reject(new Error('Erro ao ler arquivo .brM: JSON inválido'));
       }
     };

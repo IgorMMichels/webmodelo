@@ -11,7 +11,6 @@ import './index.css';
 
 export default function App() {
   const {
-    view,
     createModel, loadFromStorage, autoSave,
     undo, redo, deleteSelected, isDirty, saveToFile, loadFromFile,
   } = useModelStore();

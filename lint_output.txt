@@ -1,55 +1,78 @@
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\App.jsx
-  13:5  error    'activeModelId' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                       no-unused-vars
-  19:6  warning  React Hook useEffect has a missing dependency: 'loadFromStorage'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
-  27:6  warning  React Hook useEffect has a missing dependency: 'autoSave'. Either include it or remove the dependency array         react-hooks/exhaustive-deps
-  35:6  warning  React Hook useEffect has a missing dependency: 'autoSave'. Either include it or remove the dependency array         react-hooks/exhaustive-deps
+> brmodelo-web@0.0.0 lint
+> eslint .
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\components\Canvas.jsx
-  227:28  error    Error: Cannot access variable before it is declared
+
+C:\Users\igor\Downloads\webmodelo\dump_brm.cjs
+  1:1  error  Parsing error: 'import' and 'export' may appear only with 'sourceType: module'
+
+C:\Users\igor\Downloads\webmodelo\src\App.jsx
+  14:5  error  'view' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\igor\Downloads\webmodelo\src\components\Canvas.jsx
+   29:11  warning  The 'objects' conditional could make the dependencies of useCallback Hook (at line 270) change on every render. To fix this, wrap the initialization of 'objects' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+  200:8   warning  React Hook useCallback has a missing dependency: 'addConnection'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/exhaustive-deps
+  270:98  error    Error: Cannot access variable before it is declared
 
 `findObjectAt` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
 
-  225 |             // Find nearest object for connection target
-  226 |             const pos = screenToCanvas(e.clientX, e.clientY);
-> 227 |             const target = findObjectAt(pos.x, pos.y);
-      |                            ^^^^^^^^^^^^ `findObjectAt` accessed before it is declared
-  228 |             if (target) {
-  229 |                 // Find source object closest to connectingFrom
-  230 |                 const source = findObjectAt(connectingFrom.x, connectingFrom.y);
+  268 |             }
+  269 |         }
+> 270 |     }, [panning, selectionBox, dragging, connectingFrom, objects, screenToCanvas, addConnection, findObjectAt, setSelectedIds]);
+      |                                                                                                  ^^^^^^^^^^^^ `findObjectAt` accessed before it is declared
+  271 |
+  272 |     function findObjectAt(x, y) {
+  273 |         return objects.find(obj => {
 
-  242 |     }, [panning, selectionBox, dragging, connectingFrom, objects, screenToCanvas, addConnection]);
-  243 |
-> 244 |     const findObjectAt = (x, y) => {
-      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 245 |         return objects.find(obj => {
+  270 |     }, [panning, selectionBox, dragging, connectingFrom, objects, screenToCanvas, addConnection, findObjectAt, setSelectedIds]);
+  271 |
+> 272 |     function findObjectAt(x, y) {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 273 |         return objects.find(obj => {
       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 246 |             if (obj.type === 'entity') {
+> 274 |             if (obj.type === 'entity') {
       ÔÇª
       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 272 |         });
+> 300 |         });
       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 273 |     };
-      | ^^^^^^^ `findObjectAt` is declared here
-  274 |
-  275 |     const handleObjectMouseDown = useCallback((e, id) => {
-  276 |         e.stopPropagation();  react-hooks/immutability
-  242:8   warning  React Hook useCallback has missing dependencies: 'findObjectAt' and 'setSelectedIds'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+> 301 |     }
+      | ^^^^^^ `findObjectAt` is declared here
+  302 |
+  303 |     const handleObjectMouseDown = useCallback((e, id) => {
+  304 |         e.stopPropagation();  react-hooks/immutability
+  272:5   warning  The 'findObjectAt' function makes the dependencies of useCallback Hook (at line 270) change on every render. Move it inside the useCallback callback. Alternatively, wrap the definition of 'findObjectAt' in its own useCallback() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react-hooks/exhaustive-deps
+  365:8   warning  React Hook useCallback has a missing dependency: 'setActiveTool'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/exhaustive-deps
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\components\ConvertDialog.jsx
+C:\Users\igor\Downloads\webmodelo\src\components\ConvertDialog.jsx
   7:36  error  'createModel' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\components\er\ERAttribute.jsx
+C:\Users\igor\Downloads\webmodelo\src\components\Dashboard\Header.jsx
+  2:8  error  'useModelStore' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\igor\Downloads\webmodelo\src\components\Dashboard\ModelCard.jsx
+  52:62  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  50 |
+  51 |             <div className="text-xs text-gray-400 mt-4 flex items-center justify-between">
+> 52 |                 <span>Updated: {new Date(model.modifiedAt || Date.now()).toLocaleDateString()}</span>
+     |                                                              ^^^^^^^^^^ Cannot call impure function
+  53 |                 <span className="bg-emerald-50 text-emerald-600 text-[10px] px-1.5 py-0.5 rounded border border-emerald-100 font-medium">
+  54 |                     v{model.version || '3.0.0'}
+  55 |                 </span>  react-hooks/purity
+
+C:\Users\igor\Downloads\webmodelo\src\components\er\ERAttribute.jsx
   5:11  error  'isComposed' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\components\er\ERSpecialization.jsx
+C:\Users\igor\Downloads\webmodelo\src\components\er\ERSpecialization.jsx
   11:11  error  'typeLabel' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\services\conversionService.js
+C:\Users\igor\Downloads\webmodelo\src\services\conversionService.js
   129:51  error  'userDecisions' is assigned a value but never used  no-unused-vars
 
-C:\Users\igor\Downloads\webmodelo\brmodelo-web\src\services\fileService.js
+C:\Users\igor\Downloads\webmodelo\src\services\fileService.js
   58:16  error  'err' is defined but never used  no-unused-vars
 
-Ô£û 11 problems (7 errors, 4 warnings)
+Ô£û 14 problems (10 errors, 4 warnings)
 

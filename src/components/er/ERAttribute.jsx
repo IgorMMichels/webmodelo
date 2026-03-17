@@ -2,7 +2,7 @@ export default function ERAttribute({ obj, selected, onMouseDown, onDoubleClick 
     const isIdentifier = obj.identifier;
     const isMulti = obj.multiValued;
     const isOptional = obj.optional;
-    const isComposed = obj.composed;
+
 
     // Position text to the right of the circle
     const textX = obj.x + 12;

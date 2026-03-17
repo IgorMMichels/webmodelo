@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { Buffer } from 'buffer';
+const fs = require('fs');
+const { Buffer } = require('buffer');
 
 const filePath = '../CONCEITUAL_1.brM';
 const data = fs.readFileSync(filePath);

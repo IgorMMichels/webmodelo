@@ -126,7 +126,7 @@ function classifyRelationship(relId, graph) {
  * Convert conceptual model to logical model
  * @returns {{ tables: Object[], logicalConnections: Object[], decisions: Object[] }}
  */
-export function convertConceptualToLogical(model, userDecisions = {}) {
+export function convertConceptualToLogical(model) {
   const graph = buildModelGraph(model);
   const tables = [];
   const logicalConnections = [];

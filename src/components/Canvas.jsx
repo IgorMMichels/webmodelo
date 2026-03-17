@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import useModelStore from '../stores/useModelStore';
 import EREntity from './er/EREntity';
 import ERRelationship from './er/ERRelationship';
@@ -26,8 +26,8 @@ export default function Canvas() {
     } = useModelStore();
 
     const model = activeModelId ? models[activeModelId] : null;
-    const objects = model ? Object.values(model.objects) : [];
-    const connections = model ? Object.values(model.connections) : [];
+    const objects = useMemo(() => model ? Object.values(model.objects) : [], [model]);
+    const connections = useMemo(() => model ? Object.values(model.connections) : [], [model]);
 
     const screenToCanvas = useCallback((screenX, screenY) => {
         const svg = svgRef.current;
@@ -197,7 +197,7 @@ export default function Canvas() {
                 setActiveTool('select');
             }
         }
-    }, [activeTool, screenToCanvas, addObject, setActiveTool, clearSelection, panX, panY]);
+    }, [activeTool, screenToCanvas, addObject, setActiveTool, clearSelection, panX, panY, addConnection]);
 
     const handleMouseMove = useCallback((e) => {
         const pos = screenToCanvas(e.clientX, e.clientY);
@@ -219,6 +219,37 @@ export default function Canvas() {
             moveObjects(selectedIds.length > 0 && selectedIds.includes(dragging) ? selectedIds : [dragging], dx, dy);
         }
     }, [panning, selectionBox, dragging, zoom, panStart, screenToCanvas, moveObjects, selectedIds, setPan]);
+
+    const findObjectAt = useCallback((x, y) => {
+        return objects.find(obj => {
+            if (obj.type === 'entity') {
+                return x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height;
+            }
+            if (obj.type === 'relationship') {
+                const cx = obj.x + obj.width / 2;
+                const cy = obj.y + obj.height / 2;
+                const dx = Math.abs(x - cx) / (obj.width / 2);
+                const dy = Math.abs(y - cy) / (obj.height / 2);
+                return dx + dy <= 1;
+            }
+            if (obj.type === 'attribute') {
+                const dx = (x - obj.x) / obj.rx;
+                const dy = (y - obj.y) / obj.ry;
+                return dx * dx + dy * dy <= 1;
+            }
+            if (obj.type === 'specialization') {
+                const cx = obj.x + obj.size / 2;
+                const cy = obj.y + obj.size / 2;
+                const dx = Math.abs(x - cx) / (obj.size / 2);
+                const dy = Math.abs(y - cy) / (obj.size / 2);
+                return dx + dy <= 1;
+            }
+            if (obj.type === 'associative') {
+                return x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height;
+            }
+            return false;
+        });
+    }, [objects]);
 
     const handleMouseUp = useCallback((e) => {
         if (panning) {
@@ -268,37 +299,6 @@ export default function Canvas() {
             }
         }
     }, [panning, selectionBox, dragging, connectingFrom, objects, screenToCanvas, addConnection, findObjectAt, setSelectedIds]);
-
-    function findObjectAt(x, y) {
-        return objects.find(obj => {
-            if (obj.type === 'entity') {
-                return x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height;
-            }
-            if (obj.type === 'relationship') {
-                const cx = obj.x + obj.width / 2;
-                const cy = obj.y + obj.height / 2;
-                const dx = Math.abs(x - cx) / (obj.width / 2);
-                const dy = Math.abs(y - cy) / (obj.height / 2);
-                return dx + dy <= 1;
-            }
-            if (obj.type === 'attribute') {
-                const dx = (x - obj.x) / obj.rx;
-                const dy = (y - obj.y) / obj.ry;
-                return dx * dx + dy * dy <= 1;
-            }
-            if (obj.type === 'specialization') {
-                const cx = obj.x + obj.size / 2;
-                const cy = obj.y + obj.size / 2;
-                const dx = Math.abs(x - cx) / (obj.size / 2);
-                const dy = Math.abs(y - cy) / (obj.size / 2);
-                return dx + dy <= 1;
-            }
-            if (obj.type === 'associative') {
-                return x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height;
-            }
-            return false;
-        });
-    }
 
     const handleObjectMouseDown = useCallback((e, id) => {
         e.stopPropagation();
@@ -362,7 +362,7 @@ export default function Canvas() {
             setSelectedIds([id]);
         }
         setDragging(id);
-    }, [activeTool, screenToCanvas, selectedIds, setSelectedIds, connectingFrom, model]);
+    }, [activeTool, screenToCanvas, selectedIds, setSelectedIds, connectingFrom, model, setActiveTool]);
 
     const handleObjectDoubleClick = useCallback((e, id) => {
         e.stopPropagation();

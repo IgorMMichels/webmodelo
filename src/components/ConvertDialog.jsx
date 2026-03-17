@@ -4,7 +4,7 @@ import { generateSQL } from '../services/sqlGenerator';
 import useModelStore from '../stores/useModelStore';
 
 export default function ConvertDialog({ type, onClose }) {
-    const { models, activeModelId, createModel } = useModelStore();
+    const { models, activeModelId } = useModelStore();
     const [step, setStep] = useState(1);
     const [result, setResult] = useState(null);
     const [sqlPreview, setSqlPreview] = useState('');

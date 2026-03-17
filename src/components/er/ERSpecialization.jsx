@@ -8,7 +8,7 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
 
     // Heuser notation: 't' = total, 'p' = parcial, 'd' = disjunta (exclusiva)
     const label = obj.exclusive !== false ? (obj.total ? 't' : 'p') : (obj.total ? 't' : 'p');
-    const typeLabel = obj.exclusive !== false ? 'd' : 'o'; // d=disjunta, o=overlap
+
 
     return (
         <g

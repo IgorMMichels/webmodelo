@@ -1,5 +1,5 @@
 import { Users, File, UserCircle } from 'lucide-react';
-import useModelStore from '../../stores/useModelStore';
+
 
 export default function Header() {
     return (

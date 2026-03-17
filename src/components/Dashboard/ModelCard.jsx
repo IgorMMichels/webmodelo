@@ -49,7 +49,7 @@ export default function ModelCard({ model }) {
             </div>
 
             <div className="text-xs text-gray-400 mt-4 flex items-center justify-between">
-                <span>Updated: {new Date(model.modifiedAt || Date.now()).toLocaleDateString()}</span>
+                <span>Updated: {model.modifiedAt ? new Date(model.modifiedAt).toLocaleDateString() : 'Unknown'}</span>
                 <span className="bg-emerald-50 text-emerald-600 text-[10px] px-1.5 py-0.5 rounded border border-emerald-100 font-medium">
                     v{model.version || '3.0.0'}
                 </span>
