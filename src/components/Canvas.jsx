@@ -348,10 +348,15 @@ export default function Canvas() {
 
         if (activeTool === 'selfRelation' && (obj.type === 'entity' || obj.type === 'associative')) {
             const relId = useModelStore.getState().addObject({
-                type: 'relationship', x: obj.x + (obj.width || 120) + 40, y: obj.y, width: 100, height: 60, name: 'Auto_Rel'
+                type: 'relationship',
+                x: obj.x + (obj.width || 120) / 2 - 50,
+                y: obj.y - 100, // Move relationship above the entity
+                width: 100, height: 60, name: 'Auto_Rel'
             });
-            useModelStore.getState().addConnection({ from: id, to: relId, cardFrom: '1', cardTo: 'n', roleTo: 'Papel 1' });
-            useModelStore.getState().addConnection({ from: relId, to: id, cardFrom: '1', cardTo: 'n', roleTo: 'Papel 2' });
+            // Leg 1: Entity to Relationship
+            useModelStore.getState().addConnection({ from: id, to: relId, cardFrom: '1,1', cardTo: '', roleFrom: '' });
+            // Leg 2: Relationship to Entity
+            useModelStore.getState().addConnection({ from: relId, to: id, cardFrom: '', cardTo: '0,n', roleTo: '' });
             setActiveTool('select');
             return;
         }
@@ -431,38 +436,19 @@ export default function Canvas() {
                 <defs>
                     <pattern id="grid" width={gridSize * zoom} height={gridSize * zoom} patternUnits="userSpaceOnUse"
                         x={panX % (gridSize * zoom)} y={panY % (gridSize * zoom)}>
-                        <circle cx={gridSize * zoom / 2} cy={gridSize * zoom / 2} r={0.8} fill="rgba(99,102,241,0.15)" />
+                        <circle cx={gridSize * zoom / 2} cy={gridSize * zoom / 2} r={0.7} fill="rgba(0,0,0,0.15)" />
                     </pattern>
 
-                    {/* Entity gradient — dark glass */}
-                    <linearGradient id="entityGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="rgba(30,41,59,0.95)" />
-                        <stop offset="100%" stopColor="rgba(15,23,42,0.95)" />
-                    </linearGradient>
-
-                    {/* Relationship gradient — subtle indigo */}
-                    <linearGradient id="relationGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="rgba(30,41,59,0.92)" />
-                        <stop offset="100%" stopColor="rgba(20,30,50,0.95)" />
-                    </linearGradient>
-
-                    {/* Attribute gradient — dark teal tint */}
-                    <linearGradient id="attrGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="rgba(25,35,52,0.9)" />
-                        <stop offset="100%" stopColor="rgba(15,23,42,0.9)" />
-                    </linearGradient>
-
-                    {/* Attribute ID gradient — indigo tint */}
-                    <linearGradient id="attrIdGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="rgba(49,46,129,0.7)" />
-                        <stop offset="100%" stopColor="rgba(30,27,75,0.8)" />
-                    </linearGradient>
-
-                    {/* Specialization gradient */}
-                    <linearGradient id="specGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="rgba(28,38,56,0.9)" />
-                        <stop offset="100%" stopColor="rgba(15,23,42,0.92)" />
-                    </linearGradient>
+                    {/* Classic Drop Shadow for brModelo 2.0 */}
+                    <filter id="shadow" x="-20%" y="-20%" width="150%" height="150%">
+                        <feOffset in="SourceAlpha" dx="2" dy="2" result="offset" />
+                        <feGaussianBlur in="offset" stdDeviation="0" result="blur" />
+                        <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.3 0" result="shadow" />
+                        <feMerge>
+                            <feMergeNode in="shadow" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
 
                     {/* Selection glow filter */}
                     <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
@@ -472,25 +458,45 @@ export default function Canvas() {
                             <feMergeNode in="SourceGraphic" />
                         </feMerge>
                     </filter>
+
+                    <filter id="label-bg">
+                        <feFlood floodColor="white" result="bg" />
+                        <feMerge>
+                            <feMergeNode in="bg" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
                 </defs>
                 <rect className="canvas-bg" width="100%" height="100%" fill="url(#grid)" />
 
                 {/* Canvas transform group */}
                 <g transform={`translate(${panX}, ${panY}) scale(${zoom})`}>
                     {/* Connections */}
-                    {connections.map(conn => {
-                        const points = getConnectionPoints(conn);
-                        if (!points) return null;
-                        return (
-                            <ERConnection
-                                key={conn.id}
-                                conn={conn}
-                                from={points.from}
-                                to={points.to}
-                                selected={selectedIds.includes(conn.id)}
-                            />
-                        );
-                    })}
+                    {(() => {
+                        const pairs = {};
+                        connections.forEach(c => {
+                            const k = [c.from, c.to].sort().join('-');
+                            if (!pairs[k]) pairs[k] = [];
+                            pairs[k].push(c);
+                        });
+
+                        return Object.values(pairs).flatMap(group => {
+                            return group.map((conn, idx) => {
+                                const points = getConnectionPoints(conn);
+                                if (!points) return null;
+                                return (
+                                    <ERConnection
+                                        key={conn.id}
+                                        conn={conn}
+                                        from={points.from}
+                                        to={points.to}
+                                        selected={selectedIds.includes(conn.id)}
+                                        lineIndex={idx}
+                                    />
+                                );
+                            });
+                        });
+                    })()}
 
                     {/* Connecting line preview */}
                     {connectingFrom && (

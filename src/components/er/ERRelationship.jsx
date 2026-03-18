@@ -12,50 +12,29 @@ export default function ERRelationship({ obj, selected, onMouseDown, onDoubleCli
             onMouseDown={onMouseDown}
             onDoubleClick={onDoubleClick}
             style={{ cursor: 'move' }}
+            filter="url(#shadow)"
         >
-            {/* Selection highlight */}
-            {selected && (
-                <polygon
-                    points={points}
-                    fill="none"
-                    stroke="var(--accent-primary)"
-                    strokeWidth={3}
-                    strokeDasharray="6 3"
-                    opacity={0.6}
-                />
-            )}
-
-            {/* Main diamond — Heuser: white fill, black border */}
+            {/* Main diamond */}
             <polygon
                 points={points}
                 fill="#FFFFFF"
-                stroke="#1A1A1A"
-                strokeWidth={1.5}
+                stroke={selected ? '#2563EB' : '#111'}
+                strokeWidth={selected ? 2 : 1.2}
                 strokeLinejoin="round"
             />
 
             {/* Relationship name */}
             <text
                 x={cx}
-                y={cy + 4.5}
+                y={cy + 4}
                 textAnchor="middle"
-                fill="#1A1A1A"
+                fill="#111"
                 fontSize={12}
                 fontWeight={600}
                 fontFamily="'Inter', 'Segoe UI', sans-serif"
             >
                 {obj.name}
             </text>
-
-            {/* Selection handles at diamond vertices */}
-            {selected && (
-                <>
-                    <circle cx={cx} cy={cy - hh} r={3} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                    <circle cx={cx + hw} cy={cy} r={3} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                    <circle cx={cx} cy={cy + hh} r={3} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                    <circle cx={cx - hw} cy={cy} r={3} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                </>
-            )}
         </g>
     );
 }

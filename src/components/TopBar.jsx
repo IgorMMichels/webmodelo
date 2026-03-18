@@ -40,11 +40,11 @@ export default function TopBar() {
     };
 
     return (
-        <div className="flex items-center h-[36px] bg-slate-50 border-b border-slate-200 px-3 gap-2 shrink-0">
+        <div className="flex items-center h-[36px] bg-slate-100 border-b border-slate-300 px-3 gap-2 shrink-0">
             <div className="flex items-center gap-1">
                 <div className="relative" ref={newMenuRef}>
                     <button
-                        className="flex items-center justify-center h-7 px-3 rounded text-white cursor-pointer transition-colors duration-200 bg-purple-600 hover:bg-purple-700 shadow-sm gap-[6px]"
+                        className="flex items-center justify-center h-7 px-3 rounded-sm text-white cursor-pointer transition-colors duration-150 bg-[#2563EB] hover:bg-[#1E40AF] shadow-sm gap-[6px]"
                         onClick={() => setNewMenuOpen(!newMenuOpen)}
                     >
                         <FilePlus size={14} />
@@ -52,19 +52,19 @@ export default function TopBar() {
                         <ChevronDown size={14} className="opacity-80" />
                     </button>
                     {newMenuOpen && (
-                        <div className="absolute top-full left-0 mt-1 min-w-[200px] bg-white border border-slate-200 rounded-md shadow-lg p-1 z-50">
+                        <div className="absolute top-full left-0 mt-1 min-w-[200px] bg-white border border-slate-300 rounded shadow-lg p-1 z-50">
                             <button
-                                className="flex items-center gap-3 w-full text-left p-2 text-xs text-slate-600 rounded cursor-pointer hover:bg-slate-100 transition-colors"
+                                className="flex items-center gap-3 w-full text-left p-2 text-xs text-slate-600 rounded-sm cursor-pointer hover:bg-slate-100 transition-colors"
                                 onClick={() => { createModel('conceptual'); setNewMenuOpen(false); }}
                             >
                                 <div className="flex flex-col gap-[2px]">
-                                    <strong className="text-purple-600 font-semibold">Modelo Conceitual (brModelo Inicial)</strong>
+                                    <strong className="text-[#2563EB] font-semibold">Modelo Conceitual (brModelo Inicial)</strong>
                                     <span className="text-[10px] text-slate-500">Esquema de Entidade-Relacionamento original</span>
                                 </div>
                             </button>
                             <div className="h-px bg-slate-200 my-1 flex-shrink-0" />
                             <button
-                                className="flex items-center gap-3 w-full text-left p-2 text-xs text-slate-600 font-medium rounded cursor-pointer hover:bg-slate-100 transition-colors"
+                                className="flex items-center gap-3 w-full text-left p-2 text-xs text-slate-600 font-medium rounded-sm cursor-pointer hover:bg-slate-100 transition-colors"
                                 onClick={() => { createModel('logical'); setNewMenuOpen(false); }}
                             >
                                 Modelo Lógico Relacional
@@ -73,14 +73,14 @@ export default function TopBar() {
                     )}
                 </div>
                 <button
-                    className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
                     title="Abrir"
                     onClick={handleOpen}
                 >
                     <FolderOpen size={16} />
                 </button>
                 <button
-                    className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
                     title="Salvar"
                     onClick={saveToFile}
                 >
@@ -92,14 +92,14 @@ export default function TopBar() {
 
             <div className="flex items-center gap-1">
                 <button
-                    className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
                     title="Desfazer"
                     onClick={undo}
                 >
                     <Undo2 size={16} />
                 </button>
                 <button
-                    className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer"
                     title="Refazer"
                     onClick={redo}
                 >
@@ -110,25 +110,25 @@ export default function TopBar() {
             <div className="w-px h-5 bg-slate-300 mx-2 shrink-0" />
 
             <div className="flex items-center gap-1">
-                <button className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer" title="Copiar"><Copy size={16} /></button>
-                <button className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer" title="Recortar"><Scissors size={16} /></button>
-                <button className="flex items-center justify-center w-7 h-7 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer" title="Colar"><Clipboard size={16} /></button>
+                <button className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer" title="Copiar"><Copy size={16} /></button>
+                <button className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer" title="Recortar"><Scissors size={16} /></button>
+                <button className="flex items-center justify-center w-7 h-7 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer" title="Colar"><Clipboard size={16} /></button>
             </div>
 
             <div className="w-px h-5 bg-slate-300 mx-2 shrink-0" />
 
-            <div className="flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-slate-500 bg-slate-100 rounded border border-slate-200/60 min-w-[140px] cursor-pointer hover:border-slate-300 hover:bg-slate-200 transition-colors">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-slate-500 bg-slate-200/50 rounded-sm border border-slate-300 min-w-[140px] cursor-pointer hover:border-slate-400 hover:bg-slate-200 transition-colors">
                 <span>Modelos abertos</span>
                 <ChevronDown size={14} className="ml-auto opacity-70" />
             </div>
 
             {modelList.length > 0 && (
-                <div className="flex items-center gap-[2px]">
+                <div className="flex items-center gap-[4px]">
                     {modelList.map(model => (
                         <button
                             key={model.id}
-                            className={`flex items-center justify-center h-7 px-3 rounded transition-all text-[11px] cursor-pointer ${activeModelId === model.id
-                                ? 'bg-purple-50 text-purple-700 font-semibold border border-purple-200 shadow-sm'
+                            className={`flex items-center justify-center h-7 px-3 rounded-sm transition-all text-[11px] cursor-pointer ${activeModelId === model.id
+                                ? 'bg-[#2563EB] text-white font-semibold border border-[#1E40AF] shadow-sm'
                                 : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900 font-medium border border-transparent'
                                 }`}
                             onClick={() => setActiveModel(model.id)}
@@ -142,7 +142,7 @@ export default function TopBar() {
 
             <div className="flex-1" />
 
-            <div className="flex items-center gap-2 px-3 py-1 text-xs text-slate-500 bg-slate-100 rounded border border-slate-200 cursor-pointer hover:border-slate-300">
+            <div className="flex items-center gap-2 px-3 py-1 text-xs text-slate-500 bg-white rounded-sm border border-slate-300 cursor-pointer hover:border-slate-400 shadow-sm">
                 <Search size={12} />
                 <span>Localizar objeto</span>
             </div>

@@ -2,8 +2,8 @@
    brModelo Web — Design System
    ============================ */
 
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
 
 :root {
   /* Colors — Light Theme (Heuser/Academic Premium) */
@@ -16,17 +16,17 @@
 
   --border-primary: #E2E8F0;
   --border-secondary: #CBD5E1;
-  --border-accent: #6366F1;
+  --border-accent: #2563EB;
 
   --text-primary: #0F172A;
   --text-secondary: #475569;
   --text-muted: #64748B;
-  --text-accent: #4F46E5;
+  --text-accent: #2563EB;
 
-  --accent-primary: #4F46E5;
-  --accent-hover: #4338CA;
-  --accent-active: #3730A3;
-  --accent-glow: rgba(79, 70, 229, 0.1);
+  --accent-primary: #2563EB;
+  --accent-hover: #1E40AF;
+  --accent-active: #1E3A8A;
+  --accent-glow: rgba(37, 99, 235, 0.1);
 
   --success: #16A34A;
   --warning: #D97706;
@@ -38,10 +38,10 @@
   --er-entity-weak: #FFFFFF;
   --er-relationship: #FFFFFF;
   --er-attribute: #FFFFFF;
-  --er-line: #1A1A1A;
-  --er-text: #1A1A1A;
-  --er-selected: #4F46E5;
-  --er-selected-fill: rgba(79, 70, 229, 0.05);
+  --er-line: #111111;
+  --er-text: #111111;
+  --er-selected: #2563EB;
+  --er-selected-fill: rgba(37, 99, 235, 0.05);
 
   /* Canvas Grid */
   --grid-dot: rgba(148, 163, 184, 0.4);

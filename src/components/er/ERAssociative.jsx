@@ -15,36 +15,24 @@ export default function ERAssociative({ obj, selected, onMouseDown, onDoubleClic
             onMouseDown={onMouseDown}
             onDoubleClick={onDoubleClick}
             style={{ cursor: 'move' }}
+            filter="url(#shadow)"
         >
-            {/* Selection highlight */}
-            {selected && (
-                <rect
-                    x={obj.x - 3} y={obj.y - 3}
-                    width={obj.width + 6} height={obj.height + 6}
-                    rx={1}
-                    fill="none"
-                    stroke="var(--accent-primary)"
-                    strokeWidth={2}
-                    strokeDasharray="6 3"
-                />
-            )}
-
             {/* Outer rectangle — entity part */}
             <rect
                 x={obj.x} y={obj.y}
                 width={obj.width} height={obj.height}
-                rx={1}
+                rx={0}
                 fill="#FFFFFF"
-                stroke="#1A1A1A"
-                strokeWidth={1.5}
+                stroke={selected ? '#2563EB' : '#111'}
+                strokeWidth={selected ? 2 : 1.2}
             />
 
             {/* Inner diamond — relationship part */}
             <polygon
                 points={diamondPoints}
                 fill="#FFFFFF"
-                stroke="#1A1A1A"
-                strokeWidth={1.2}
+                stroke={selected ? '#2563EB' : '#111'}
+                strokeWidth={1}
                 strokeLinejoin="round"
             />
 
@@ -53,23 +41,13 @@ export default function ERAssociative({ obj, selected, onMouseDown, onDoubleClic
                 x={cx}
                 y={cy + 4}
                 textAnchor="middle"
-                fill="#1A1A1A"
+                fill="#111"
                 fontSize={12}
                 fontWeight={600}
                 fontFamily="'Inter', 'Segoe UI', sans-serif"
             >
                 {obj.name}
             </text>
-
-            {/* Selection handles */}
-            {selected && (
-                <>
-                    <rect x={obj.x - 3} y={obj.y - 3} width={6} height={6} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                    <rect x={obj.x + obj.width - 3} y={obj.y - 3} width={6} height={6} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                    <rect x={obj.x - 3} y={obj.y + obj.height - 3} width={6} height={6} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                    <rect x={obj.x + obj.width - 3} y={obj.y + obj.height - 3} width={6} height={6} fill="var(--accent-primary)" stroke="#fff" strokeWidth={1} />
-                </>
-            )}
         </g>
     );
 }

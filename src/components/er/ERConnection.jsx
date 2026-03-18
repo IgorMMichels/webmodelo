@@ -1,84 +1,77 @@
-export default function ERConnection({ conn, from, to, selected }) {
-    // Calculate positions for cardinality labels near each endpoint
-    const fromLabelX = from.x + (to.x - from.x) * 0.2;
-    const fromLabelY = from.y + (to.y - from.y) * 0.2;
-    const toLabelX = from.x + (to.x - from.x) * 0.8;
-    const toLabelY = from.y + (to.y - from.y) * 0.8;
+export default function ERConnection({ conn, from, to, selected, lineIndex = 0 }) {
+    // Define a consistent direction for the normal vector (nx, ny)
+    // based on comparing object IDs. This ensures parallel connections
+    // have their labels on the SAME side of the line.
+    const isReversed = conn.from > conn.to;
+    const baseDx = isReversed ? (from.x - to.x) : (to.x - from.x);
+    const baseDy = isReversed ? (from.y - to.y) : (to.y - from.y);
+    const baseLen = Math.sqrt(baseDx * baseDx + baseDy * baseDy) || 1;
 
-    // Offset labels perpendicular to the line
-    const dx = to.x - from.x;
-    const dy = to.y - from.y;
-    const len = Math.sqrt(dx * dx + dy * dy) || 1;
-    const nx = -dy / len;
-    const ny = dx / len;
+    // Consistent Normal: -dy, dx from the stabilized direction
+    const cnx = -baseDy / baseLen;
+    const cny = baseDx / baseLen;
+
+    // Stagger labels along the line segment
+    const shiftStart = 0.18 + (lineIndex * 0.22);
+    const shiftEnd = 0.82 - (lineIndex * 0.22);
+
+    const fromLabelX = from.x + (to.x - from.x) * shiftStart;
+    const fromLabelY = from.y + (to.y - from.y) * shiftStart;
+    const toLabelX = from.x + (to.x - from.x) * shiftEnd;
+    const toLabelY = from.y + (to.y - from.y) * shiftEnd;
+
     const offset = 14;
+
+    const formatLabel = (role, card) => {
+        if (!role && !card) return null;
+        let c = card ? (card.startsWith('(') ? card : `(${card})`) : '';
+        return { role, card: c };
+    };
+
+    const labelFromData = formatLabel(conn.roleFrom, conn.cardFrom);
+    const labelToData = formatLabel(conn.roleTo, conn.cardTo);
+
+    const margin = 18;
 
     return (
         <g className={`er-connection ${selected ? 'selected' : ''}`}>
-            {/* Main line — Heuser: solid black, thin */}
+            {/* Main line */}
             <line
                 x1={from.x} y1={from.y}
                 x2={to.x} y2={to.y}
-                stroke={selected ? 'var(--accent-primary)' : '#1A1A1A'}
-                strokeWidth={selected ? 2 : 1.2}
+                stroke={selected ? '#2563EB' : '#111'}
+                strokeWidth={selected ? 2 : 1}
             />
 
-            {/* Cardinality from — Heuser: simple text (min,max) */}
-            {conn.cardFrom && (
+            {labelFromData && (
                 <text
-                    x={fromLabelX + nx * offset}
-                    y={fromLabelY + ny * offset + 4}
+                    x={fromLabelX + cnx * margin}
+                    y={fromLabelY + cny * margin + 4}
                     textAnchor="middle"
                     fontSize={11}
-                    fontWeight={500}
-                    fill="#1A1A1A"
-                    fontFamily="'Inter', 'Segoe UI', sans-serif"
+                    fontWeight={600}
+                    fill={selected ? '#2563EB' : '#222'}
+                    fontFamily="'Inter', sans-serif"
+                    filter="url(#label-bg)"
                 >
-                    ({conn.cardFrom})
+                    {labelFromData.role && <tspan x={fromLabelX + cnx * margin} dy="-0.2em" fontSize={10} fontWeight={400} fill="#64748B">{labelFromData.role}</tspan>}
+                    <tspan x={fromLabelX + cnx * margin} dy={labelFromData.role ? "1.1em" : "0"}>{labelFromData.card}</tspan>
                 </text>
             )}
 
-            {/* Cardinality to — Heuser: simple text (min,max) */}
-            {conn.cardTo && (
+            {labelToData && (
                 <text
-                    x={toLabelX + nx * offset}
-                    y={toLabelY + ny * offset + 4}
+                    x={toLabelX + cnx * margin}
+                    y={toLabelY + cny * margin + 4}
                     textAnchor="middle"
                     fontSize={11}
-                    fontWeight={500}
-                    fill="#1A1A1A"
-                    fontFamily="'Inter', 'Segoe UI', sans-serif"
+                    fontWeight={600}
+                    fill={selected ? '#2563EB' : '#222'}
+                    fontFamily="'Inter', sans-serif"
+                    filter="url(#label-bg)"
                 >
-                    ({conn.cardTo})
-                </text>
-            )}
-
-            {/* Role label for auto-relationships */}
-            {conn.roleFrom && (
-                <text
-                    x={fromLabelX - nx * offset}
-                    y={fromLabelY - ny * offset + 4}
-                    textAnchor="middle"
-                    fontSize={9}
-                    fill="#666"
-                    fontStyle="italic"
-                    fontFamily="'Inter', 'Segoe UI', sans-serif"
-                >
-                    {conn.roleFrom}
-                </text>
-            )}
-
-            {conn.roleTo && (
-                <text
-                    x={toLabelX - nx * offset}
-                    y={toLabelY - ny * offset + 4}
-                    textAnchor="middle"
-                    fontSize={9}
-                    fill="#666"
-                    fontStyle="italic"
-                    fontFamily="'Inter', 'Segoe UI', sans-serif"
-                >
-                    {conn.roleTo}
+                    {labelToData.role && <tspan x={toLabelX + cnx * margin} dy="-0.2em" fontSize={10} fontWeight={400} fill="#64748B">{labelToData.role}</tspan>}
+                    <tspan x={toLabelX + cnx * margin} dy={labelToData.role ? "1.1em" : "0"}>{labelToData.card}</tspan>
                 </text>
             )}
         </g>

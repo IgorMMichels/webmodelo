@@ -108,34 +108,34 @@ export default function MenuBar() {
     };
 
     return (
-        <div className="flex items-center h-[32px] bg-slate-50 border-b border-slate-200 px-2 gap-1 shrink-0 z-40 relative" ref={menuRef}>
+        <div className="flex items-center h-[32px] bg-slate-100 border-b border-slate-300 px-2 gap-1 shrink-0 z-40 relative" ref={menuRef}>
             <div
-                className="flex items-center gap-2 pr-3 mr-2 border-r border-slate-200 cursor-pointer hover:bg-slate-200 hover:text-slate-900 text-slate-800 rounded px-2 py-1 transition-colors"
+                className="flex items-center gap-2 pr-3 mr-2 border-r border-slate-300 cursor-pointer hover:bg-slate-200 hover:text-slate-900 text-slate-800 rounded px-2 py-1 transition-colors"
                 onClick={() => setView('dashboard')}
                 title="Ir para o Painel"
                 style={{ cursor: 'pointer' }}
             >
-                <FileText size={16} className="text-purple-600" />
-                <span className="font-bold text-[13px] tracking-tight">Web<span className="text-purple-600">Modelo</span></span>
+                <FileText size={16} className="text-[#2563EB]" />
+                <span className="font-bold text-[13px] tracking-tight">Web<span className="text-[#2563EB]">Modelo</span></span>
             </div>
             {menus.map((menu, i) => (
                 <div key={i} className="relative">
                     <button
-                        className={`relative px-3 py-1 text-xs rounded cursor-pointer transition-colors duration-200 border-none font-sans ${openMenu === i ? 'bg-purple-50 text-purple-700 shadow-sm font-medium' : 'text-slate-600 bg-transparent hover:bg-slate-200 hover:text-slate-900'}`}
+                        className={`relative px-3 py-1 text-xs rounded-sm cursor-pointer transition-colors duration-150 border-none font-sans ${openMenu === i ? 'bg-[#2563EB] text-white shadow-sm font-medium' : 'text-slate-600 bg-transparent hover:bg-slate-200 hover:text-slate-900'}`}
                         onClick={() => setOpenMenu(openMenu === i ? null : i)}
                         onMouseEnter={() => openMenu !== null && setOpenMenu(i)}
                     >
                         {menu.label}
                     </button>
                     {openMenu === i && (
-                        <div className="absolute top-full left-0 min-w-[220px] bg-white border border-slate-200 rounded-md shadow-lg p-1 z-[1000] mt-1">
+                        <div className="absolute top-full left-0 min-w-[220px] bg-white border border-slate-200 rounded shadow-lg p-1 z-[1000] mt-1">
                             {menu.items.map((item, j) => (
                                 item.type === 'separator' ? (
                                     <div key={j} className="h-px bg-slate-100 my-1" />
                                 ) : (
                                     <button
                                         key={j}
-                                        className="flex items-center gap-3 w-full text-left px-3 py-2 text-xs text-slate-600 rounded cursor-pointer hover:bg-slate-50 hover:text-purple-700 transition-colors"
+                                        className="flex items-center gap-3 w-full text-left px-3 py-2 text-xs text-slate-600 rounded-sm cursor-pointer hover:bg-slate-50 hover:text-[#2563EB] transition-colors"
                                         onClick={() => handleAction(item.action)}
                                     >
                                         {item.icon && <item.icon size={14} className="opacity-80" />}

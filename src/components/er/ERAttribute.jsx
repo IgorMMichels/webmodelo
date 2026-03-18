@@ -15,50 +15,36 @@ export default function ERAttribute({ obj, selected, onMouseDown, onDoubleClick 
             onDoubleClick={onDoubleClick}
             style={{ cursor: 'move' }}
         >
-            {/* Selection highlight box / glow */}
-            {selected && (
-                <circle
-                    cx={obj.x} cy={obj.y}
-                    r={10}
-                    fill="none"
-                    stroke="var(--accent-primary)"
-                    strokeWidth={2}
-                    strokeDasharray="4 2"
-                    opacity={0.6}
-                />
-            )}
+            {/* Main Attribute Ball - Blue strokes in brModelo 2.0 */}
+            <circle
+                cx={obj.x} cy={obj.y}
+                r={4}
+                fill={isIdentifier ? '#003366' : '#FFFFFF'}
+                stroke={selected ? '#2563EB' : '#003366'}
+                strokeWidth={selected ? 2 : 1.2}
+                strokeDasharray={isOptional && !isIdentifier ? '2 1' : 'none'}
+            />
 
             {/* Multivalued outer ring */}
             {isMulti && (
                 <circle
                     cx={obj.x} cy={obj.y}
-                    r={8}
+                    r={6}
                     fill="none"
-                    stroke="#1A1A1A"
-                    strokeWidth={1.2}
+                    stroke={selected ? '#2563EB' : '#003366'}
+                    strokeWidth={1}
                 />
             )}
-
-            {/* Main Attribute Ball */}
-            <circle
-                cx={obj.x} cy={obj.y}
-                r={5}
-                fill={isIdentifier ? '#1A1A1A' : '#FFFFFF'}
-                stroke={isIdentifier ? 'none' : '#1A1A1A'}
-                strokeWidth={1.5}
-                strokeDasharray={isOptional && !isIdentifier ? '2 1' : 'none'}
-            />
 
             {/* Text Label */}
             <text
                 x={textX}
                 y={textY}
                 textAnchor="start"
-                fill="#1A1A1A"
+                fill="#111"
                 fontSize={12}
                 fontWeight={isIdentifier ? 600 : 400}
                 fontFamily="var(--font-ui)"
-                textDecoration={isIdentifier ? 'underline' : 'none'}
             >
                 {obj.name}
             </text>

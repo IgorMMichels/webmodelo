@@ -16,25 +16,14 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
             onMouseDown={onMouseDown}
             onDoubleClick={onDoubleClick}
             style={{ cursor: 'move' }}
+            filter="url(#shadow)"
         >
-            {/* Selection highlight */}
-            {selected && (
-                <polygon
-                    points={points}
-                    fill="none"
-                    stroke="var(--accent-primary)"
-                    strokeWidth={3}
-                    strokeDasharray="6 3"
-                    opacity={0.6}
-                />
-            )}
-
-            {/* Main triangle — Heuser: white fill, black border */}
+            {/* Main triangle */}
             <polygon
                 points={points}
                 fill="#FFFFFF"
-                stroke="#1A1A1A"
-                strokeWidth={1.5}
+                stroke={selected ? '#2563EB' : '#111'}
+                strokeWidth={selected ? 2 : 1.2}
                 strokeLinejoin="round"
             />
 
@@ -43,7 +32,7 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
                 <line
                     x1={cx - halfBase * 0.7} y1={bottom}
                     x2={cx + halfBase * 0.7} y2={bottom}
-                    stroke="#1A1A1A"
+                    stroke={selected ? '#2563EB' : '#111'}
                     strokeWidth={3}
                 />
             )}
@@ -54,7 +43,7 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
                 y={bottom - obj.size * 0.3 + 2}
                 textAnchor="middle"
                 fontSize={11}
-                fill="#1A1A1A"
+                fill="#111"
                 fontWeight={600}
                 fontFamily="'Inter', 'Segoe UI', sans-serif"
             >
