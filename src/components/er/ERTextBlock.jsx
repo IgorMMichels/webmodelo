@@ -26,10 +26,7 @@ export default function ERTextBlock({ obj, selected, onMouseDown, onDoubleClick 
             <text
                 x={obj.x}
                 y={obj.y}
-                fontSize={12}
-                fill="#94A3B8"
-                fontFamily="'Inter', sans-serif"
-                fontStyle="italic"
+                className="fill-slate-400 text-xs font-sans italic"
             >
                 {obj.text}
             </text>

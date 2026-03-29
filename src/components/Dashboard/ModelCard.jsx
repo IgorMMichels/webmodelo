@@ -21,36 +21,40 @@ export default function ModelCard({ model }) {
     return (
         <div
             onClick={handleOpen}
-            className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between group"
+            className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-250 cursor-pointer flex flex-col justify-between group"
             style={{ minHeight: '140px' }}
         >
             <div className="flex justify-between items-start">
                 <div className="flex gap-3">
-                    <div className="text-gray-400 mt-1">
+                    <div className="text-slate-300 mt-1 group-hover:text-[#2563EB] transition-colors duration-200">
                         <HardDrive size={20} />
                     </div>
                     <div>
-                        <h3 className="text-gray-800 font-semibold text-base mb-1 truncate max-w-[200px]" title={model.name}>
+                        <h3 className="text-slate-800 font-semibold text-base mb-1.5 truncate max-w-[200px] group-hover:text-[#2563EB] transition-colors duration-200" title={model.name}>
                             {model.name}
                         </h3>
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                            isConceptual
+                                ? 'bg-blue-50 text-[#2563EB] border border-blue-100'
+                                : 'bg-amber-50 text-amber-600 border border-amber-100'
+                        }`}>
                             {isConceptual ? 'Conceptual' : 'Logical'}
                         </span>
                     </div>
                 </div>
 
                 <button
-                    className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="btn-icon w-7 h-7 text-slate-200 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all duration-200"
                     onClick={handleDelete}
                     title="Delete model"
                 >
-                    <Trash2 size={16} />
+                    <Trash2 size={14} />
                 </button>
             </div>
 
-            <div className="text-xs text-gray-400 mt-4 flex items-center justify-between">
+            <div className="text-[11px] text-slate-300 mt-4 flex items-center justify-between">
                 <span>Updated: {model.modifiedAt ? new Date(model.modifiedAt).toLocaleDateString() : 'Unknown'}</span>
-                <span className="bg-emerald-50 text-emerald-600 text-[10px] px-1.5 py-0.5 rounded border border-emerald-100 font-medium">
+                <span className="bg-slate-50 text-slate-400 text-[10px] px-1.5 py-0.5 rounded border border-slate-100 font-mono font-medium">
                     v{model.version || '3.0.0'}
                 </span>
             </div>

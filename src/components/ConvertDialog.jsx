@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { X, Copy, Download, ArrowLeft } from 'lucide-react';
 import { convertConceptualToLogical } from '../services/conversionService';
 import { generateSQL } from '../services/sqlGenerator';
 import useModelStore from '../stores/useModelStore';
@@ -21,15 +22,12 @@ export default function ConvertDialog({ type, onClose }) {
 
     const handleApplyLogical = () => {
         if (!result) return;
-        // Create a new logical model with the converted tables
         const store = useModelStore.getState();
         const newModelId = store.createModel('logical');
 
-        // Add each table as an object in the new model
         for (const table of result.tables) {
             store.addObject(table, newModelId);
         }
-        // Add logical connections
         for (const conn of result.logicalConnections) {
             store.addConnection(conn, newModelId);
         }
@@ -40,7 +38,6 @@ export default function ConvertDialog({ type, onClose }) {
     const handleGenerateSQL = () => {
         if (!model) return;
 
-        // If current model is logical, use its tables directly
         const tables = Object.values(model.objects).filter(o => o.type === 'table');
         const connections = Object.values(model.connections);
 
@@ -73,41 +70,44 @@ export default function ConvertDialog({ type, onClose }) {
     return (
         <div className="dialog-overlay" onClick={onClose}>
             <div className="dialog" style={{ minWidth: 520, maxWidth: 700 }} onClick={e => e.stopPropagation()}>
+                {/* Header */}
                 <div className="dialog-header">
-                    <h2>
-                        {type === 'logical' ? '🔄 Converter para Modelo Lógico' : '📄 Gerar Esquema Físico (SQL)'}
+                    <h2 className="text-[15px] font-semibold text-slate-800">
+                        {type === 'logical' ? 'Converter para Modelo Lógico' : 'Gerar Esquema Físico (SQL)'}
                     </h2>
-                    <button className="topbar-btn" onClick={onClose} style={{ fontSize: 18 }}>✕</button>
+                    <button className="btn-icon" onClick={onClose} title="Fechar">
+                        <X size={16} />
+                    </button>
                 </div>
 
                 <div className="dialog-body" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
                     {/* Step 1: Confirm conversion */}
                     {type === 'logical' && step === 1 && (
                         <div>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: 16 }}>
-                                Converter o modelo conceitual <strong style={{ color: 'var(--accent-primary)' }}>{model?.name}</strong> para modelo lógico relacional.
+                            <p className="text-sm text-slate-500 mb-4">
+                                Converter o modelo conceitual <strong className="text-[#2563EB]">{model?.name}</strong> para modelo lógico relacional.
                             </p>
-                            <div className="panel-info" style={{ marginBottom: 16 }}>
-                                <div className="panel-info-row">
-                                    <span className="label">Entidades:</span>
-                                    <span className="value">
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-4 space-y-2">
+                                <div className="flex justify-between items-center text-[12px]">
+                                    <span className="text-slate-400 font-medium">Entidades:</span>
+                                    <span className="font-bold text-slate-600">
                                         {Object.values(model?.objects || {}).filter(o => o.type === 'entity').length}
                                     </span>
                                 </div>
-                                <div className="panel-info-row">
-                                    <span className="label">Relações:</span>
-                                    <span className="value">
+                                <div className="flex justify-between items-center text-[12px]">
+                                    <span className="text-slate-400 font-medium">Relações:</span>
+                                    <span className="font-bold text-slate-600">
                                         {Object.values(model?.objects || {}).filter(o => o.type === 'relationship').length}
                                     </span>
                                 </div>
-                                <div className="panel-info-row">
-                                    <span className="label">Atributos:</span>
-                                    <span className="value">
+                                <div className="flex justify-between items-center text-[12px]">
+                                    <span className="text-slate-400 font-medium">Atributos:</span>
+                                    <span className="font-bold text-slate-600">
                                         {Object.values(model?.objects || {}).filter(o => o.type === 'attribute').length}
                                     </span>
                                 </div>
                             </div>
-                            <p style={{ color: 'var(--text-muted)', fontSize: 12 }}>
+                            <p className="text-[11px] text-slate-400 italic">
                                 Regras de conversão baseadas no livro "Projeto de Banco de Dados" (Heuser).
                             </p>
                         </div>
@@ -116,25 +116,25 @@ export default function ConvertDialog({ type, onClose }) {
                     {/* Step 2: Preview logical result */}
                     {type === 'logical' && step === 2 && result && (
                         <div>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: 12 }}>
+                            <p className="text-sm text-slate-500 mb-3">
                                 Resultado da conversão:
                             </p>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <div className="flex flex-col gap-2">
                                 {result.tables.map((table, i) => (
-                                    <div key={i} className="panel-info" style={{ padding: 10 }}>
-                                        <div style={{ fontWeight: 600, color: '#E0E7FF', marginBottom: 6, fontSize: 13 }}>
+                                    <div key={i} className="bg-slate-800 border border-slate-700 rounded-lg p-3">
+                                        <div className="font-semibold text-blue-300 mb-2 text-[13px]">
                                             {table.name}
                                         </div>
                                         {table.fields.map((f, j) => (
-                                            <div key={j} style={{ display: 'flex', gap: 8, fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}>
-                                                <span style={{ width: 24, color: f.pk ? '#FBBF24' : (f.fk ? '#60A5FA' : 'transparent'), fontWeight: 700 }}>
+                                            <div key={j} className="flex gap-2 text-[11px] font-mono leading-relaxed">
+                                                <span className="w-6 text-right" style={{ color: f.pk ? '#FBBF24' : (f.fk ? '#60A5FA' : 'transparent'), fontWeight: 700 }}>
                                                     {f.pk ? 'PK' : (f.fk ? 'FK' : '')}
                                                 </span>
-                                                <span style={{ flex: 1, color: f.pk ? '#FEF3C7' : '#CBD5E1', textDecoration: f.pk ? 'underline' : 'none' }}>
+                                                <span className={`flex-1 ${f.pk ? 'text-yellow-100 underline' : 'text-slate-300'}`}>
                                                     {f.name}
                                                 </span>
-                                                <span style={{ color: '#64748B' }}>{f.type}</span>
-                                                {f.nn && <span style={{ color: '#F87171', fontSize: 9 }}>NN</span>}
+                                                <span className="text-slate-500">{f.type}</span>
+                                                {f.nn && <span className="text-red-400 text-[9px] font-bold">NN</span>}
                                             </div>
                                         ))}
                                     </div>
@@ -146,12 +146,12 @@ export default function ConvertDialog({ type, onClose }) {
                     {/* Step 1 for SQL: select SGBD */}
                     {type === 'physical' && step === 1 && (
                         <div>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: 16 }}>
-                                Gerar script SQL a partir do modelo lógico <strong style={{ color: 'var(--accent-primary)' }}>{model?.name}</strong>
+                            <p className="text-sm text-slate-500 mb-4">
+                                Gerar script SQL a partir do modelo lógico <strong className="text-[#2563EB]">{model?.name}</strong>
                             </p>
-                            <div className="panel-field" style={{ marginBottom: 16 }}>
-                                <label>SGBD:</label>
-                                <select value={sgbd} onChange={e => setSgbd(e.target.value)}>
+                            <div className="mb-4">
+                                <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5 block">SGBD</label>
+                                <select className="select-field" value={sgbd} onChange={e => setSgbd(e.target.value)}>
                                     <option value="postgresql">PostgreSQL</option>
                                     <option value="mysql">MySQL</option>
                                     <option value="sqlite">SQLite</option>
@@ -163,35 +163,29 @@ export default function ConvertDialog({ type, onClose }) {
                     {/* Step 3: SQL Preview */}
                     {step === 3 && sqlPreview && (
                         <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                                <span style={{ color: 'var(--text-secondary)', fontSize: 12 }}>
-                                    SGBD: <strong style={{ color: 'var(--accent-primary)' }}>{sgbd.toUpperCase()}</strong>
+                            <div className="flex justify-between items-center mb-3">
+                                <span className="text-[12px] text-slate-400">
+                                    SGBD: <strong className="text-[#2563EB]">{sgbd.toUpperCase()}</strong>
                                 </span>
-                                <div style={{ display: 'flex', gap: 8 }}>
-                                    <button className="btn" onClick={handleCopySQL}>Copiar</button>
-                                    <button className="btn btn-primary" onClick={handleDownloadSQL}>Baixar .sql</button>
+                                <div className="flex gap-2">
+                                    <button className="btn" onClick={handleCopySQL}>
+                                        <Copy size={13} />
+                                        Copiar
+                                    </button>
+                                    <button className="btn btn-primary" onClick={handleDownloadSQL}>
+                                        <Download size={13} />
+                                        Baixar .sql
+                                    </button>
                                 </div>
                             </div>
-                            <pre style={{
-                                background: '#0F172A',
-                                border: '1px solid var(--border-primary)',
-                                borderRadius: 6,
-                                padding: 16,
-                                fontFamily: "'JetBrains Mono', monospace",
-                                fontSize: 12,
-                                color: '#E2E8F0',
-                                lineHeight: 1.6,
-                                overflow: 'auto',
-                                maxHeight: 400,
-                                whiteSpace: 'pre-wrap',
-                                wordBreak: 'break-word',
-                            }}>
+                            <pre className="bg-[#0F172A] border border-slate-700 rounded-lg p-4 font-mono text-[12px] text-slate-300 leading-relaxed overflow-auto max-h-[400px] whitespace-pre-wrap break-words">
                                 {sqlPreview}
                             </pre>
                         </div>
                     )}
                 </div>
 
+                {/* Footer */}
                 <div className="dialog-footer">
                     {type === 'logical' && step === 1 && (
                         <button className="btn btn-primary" onClick={handleConvertToLogical}>
@@ -200,7 +194,10 @@ export default function ConvertDialog({ type, onClose }) {
                     )}
                     {type === 'logical' && step === 2 && (
                         <>
-                            <button className="btn" onClick={() => setStep(1)}>Voltar</button>
+                            <button className="btn" onClick={() => setStep(1)}>
+                                <ArrowLeft size={13} />
+                                Voltar
+                            </button>
                             <button className="btn btn-primary" onClick={handleApplyLogical}>
                                 Criar Modelo Lógico
                             </button>

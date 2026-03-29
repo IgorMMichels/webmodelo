@@ -22,18 +22,13 @@ export default function ERAssociative({ obj, selected, onMouseDown, onDoubleClic
                 x={obj.x} y={obj.y}
                 width={obj.width} height={obj.height}
                 rx={0}
-                fill="#FFFFFF"
-                stroke={selected ? '#2563EB' : '#111'}
-                strokeWidth={selected ? 2 : 1.2}
+                className={`fill-white ${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800 stroke-[1.2px]'}`}
             />
 
             {/* Inner diamond — relationship part */}
             <polygon
                 points={diamondPoints}
-                fill="#FFFFFF"
-                stroke={selected ? '#2563EB' : '#111'}
-                strokeWidth={1}
-                strokeLinejoin="round"
+                className={`fill-white ${selected ? 'stroke-blue-600' : 'stroke-slate-800'} stroke-1 stroke-linejoin-round`}
             />
 
             {/* Name centered */}
@@ -41,10 +36,7 @@ export default function ERAssociative({ obj, selected, onMouseDown, onDoubleClic
                 x={cx}
                 y={cy + 4}
                 textAnchor="middle"
-                fill="#111"
-                fontSize={12}
-                fontWeight={600}
-                fontFamily="'Inter', 'Segoe UI', sans-serif"
+                className="fill-slate-800 text-xs font-semibold font-sans"
             >
                 {obj.name}
             </text>

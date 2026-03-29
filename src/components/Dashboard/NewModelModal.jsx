@@ -14,17 +14,19 @@ export default function NewModelModal({ onClose }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
-                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800">New model</h2>
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-slide">
+                {/* Header */}
+                <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                    <h2 className="text-xl font-semibold text-slate-800">New model</h2>
                 </div>
 
+                {/* Body */}
                 <div className="p-6 space-y-5">
                     <div className="flex items-center gap-4">
-                        <label className="text-sm font-medium text-gray-700 w-12 text-right">Title</label>
+                        <label className="text-[12px] font-semibold text-slate-500 w-12 text-right uppercase tracking-wider">Title</label>
                         <input
                             type="text"
-                            className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            className="input-field flex-1 !py-2 !px-3 !text-sm"
                             placeholder="My Model"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -33,9 +35,9 @@ export default function NewModelModal({ onClose }) {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <label className="text-sm font-medium text-gray-700 w-12 text-right">Type</label>
+                        <label className="text-[12px] font-semibold text-slate-500 w-12 text-right uppercase tracking-wider">Type</label>
                         <select
-                            className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                            className="select-field flex-1 !py-2 !px-3 !text-sm"
                             value={type}
                             onChange={(e) => setType(e.target.value)}
                         >
@@ -45,16 +47,17 @@ export default function NewModelModal({ onClose }) {
                     </div>
                 </div>
 
-                <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
+                {/* Footer */}
+                <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3 bg-slate-50">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                        className="btn"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleSave}
-                        className="px-4 py-2 text-sm font-medium text-emerald-600 bg-white border border-emerald-600 rounded-md hover:bg-emerald-50 transition-colors"
+                        className="btn btn-primary"
                     >
                         Save
                     </button>

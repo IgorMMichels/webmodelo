@@ -43,9 +43,8 @@ export default function LogicalTable({ obj, selected, onMouseDown, onDoubleClick
                 x={obj.x} y={obj.y}
                 width={w} height={totalH}
                 rx={4}
+                className={`${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800/40 stroke-1'}`}
                 fill="url(#entityGradient)"
-                stroke={selected ? 'var(--accent-primary)' : 'rgba(148,163,184,0.35)'}
-                strokeWidth={selected ? 2 : 1}
             />
 
             {/* Header background */}
@@ -53,13 +52,13 @@ export default function LogicalTable({ obj, selected, onMouseDown, onDoubleClick
                 x={obj.x} y={obj.y}
                 width={w} height={headerH}
                 rx={4}
-                fill="rgba(99,102,241,0.2)"
+                className="fill-indigo-500/20"
             />
             {/* Bottom corners of header are square */}
             <rect
                 x={obj.x} y={obj.y + headerH - 4}
                 width={w} height={4}
-                fill="rgba(99,102,241,0.2)"
+                className="fill-indigo-500/20"
             />
 
             {/* Header separator */}
@@ -75,11 +74,7 @@ export default function LogicalTable({ obj, selected, onMouseDown, onDoubleClick
                 x={obj.x + w / 2}
                 y={obj.y + headerH / 2 + 5}
                 textAnchor="middle"
-                fill="#E0E7FF"
-                fontSize={13}
-                fontWeight={700}
-                fontFamily="'Inter', sans-serif"
-                letterSpacing="0.3"
+                className="fill-indigo-100 text-[13px] font-bold font-sans tracking-[0.3px]"
             >
                 {obj.name}
             </text>
@@ -103,9 +98,7 @@ export default function LogicalTable({ obj, selected, onMouseDown, onDoubleClick
                         {field.pk && (
                             <text
                                 x={obj.x + 10} y={fy + 13}
-                                fontSize={10} fontWeight={700}
-                                fill="#FBBF24"
-                                fontFamily="'JetBrains Mono', monospace"
+                                className="fill-amber-400 text-[10px] font-bold font-mono"
                             >
                                 PK
                             </text>
@@ -115,9 +108,7 @@ export default function LogicalTable({ obj, selected, onMouseDown, onDoubleClick
                         {field.fk && !field.pk && (
                             <text
                                 x={obj.x + 10} y={fy + 13}
-                                fontSize={10} fontWeight={600}
-                                fill="#60A5FA"
-                                fontFamily="'JetBrains Mono', monospace"
+                                className="fill-blue-400 text-[10px] font-semibold font-mono"
                             >
                                 FK
                             </text>
@@ -127,11 +118,7 @@ export default function LogicalTable({ obj, selected, onMouseDown, onDoubleClick
                         <text
                             x={obj.x + (field.pk || field.fk ? 32 : 10)}
                             y={fy + 13}
-                            fontSize={11}
-                            fill={field.pk ? '#FEF3C7' : (field.fk ? '#BFDBFE' : '#CBD5E1')}
-                            fontWeight={field.pk ? 600 : 400}
-                            fontFamily="'JetBrains Mono', monospace"
-                            textDecoration={field.pk ? 'underline' : 'none'}
+                            className={`text-[11px] font-mono ${field.pk ? 'fill-amber-100 font-semibold underline' : (field.fk ? 'fill-blue-200 font-normal' : 'fill-slate-300 font-normal')}`}
                         >
                             {field.name}
                         </text>

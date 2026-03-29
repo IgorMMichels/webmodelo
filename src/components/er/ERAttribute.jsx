@@ -19,9 +19,7 @@ export default function ERAttribute({ obj, selected, onMouseDown, onDoubleClick 
             <circle
                 cx={obj.x} cy={obj.y}
                 r={4}
-                fill={isIdentifier ? '#003366' : '#FFFFFF'}
-                stroke={selected ? '#2563EB' : '#003366'}
-                strokeWidth={selected ? 2 : 1.2}
+                className={`${isIdentifier ? 'fill-slate-800' : 'fill-white'} ${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800 stroke-[1.2px]'} ${isOptional && !isIdentifier ? 'stroke-dashed border-dashed dasharray-[2,1]' : ''}`}
                 strokeDasharray={isOptional && !isIdentifier ? '2 1' : 'none'}
             />
 
@@ -30,9 +28,7 @@ export default function ERAttribute({ obj, selected, onMouseDown, onDoubleClick 
                 <circle
                     cx={obj.x} cy={obj.y}
                     r={6}
-                    fill="none"
-                    stroke={selected ? '#2563EB' : '#003366'}
-                    strokeWidth={1}
+                    className={`fill-none ${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800'} stroke-1`}
                 />
             )}
 
@@ -41,10 +37,7 @@ export default function ERAttribute({ obj, selected, onMouseDown, onDoubleClick 
                 x={textX}
                 y={textY}
                 textAnchor="start"
-                fill="#111"
-                fontSize={12}
-                fontWeight={isIdentifier ? 600 : 400}
-                fontFamily="var(--font-ui)"
+                className={`fill-slate-800 text-xs font-sans ${isIdentifier ? 'font-semibold' : 'font-normal'}`}
             >
                 {obj.name}
             </text>

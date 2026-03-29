@@ -17,114 +17,102 @@ export default function PropertyPanel() {
         }
     };
 
-    const PropertyHeader = ({ children }) => (
-        <div className="bg-slate-100/80 border-y border-slate-200 px-3 py-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 first:border-t-0">
+    const SectionHeader = ({ children }) => (
+        <div className="bg-slate-50 border-y border-slate-100 px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 first:border-t-0 flex items-center gap-1.5">
+            <span className="w-[2px] h-[10px] bg-[#2563EB] rounded-full shrink-0" />
             {children}
         </div>
     );
 
-    const PropertyRow = ({ label, children }) => (
-        <div className="flex items-center gap-3 px-3 mb-2.5 last:mb-4">
-            <span className="text-[11px] font-medium text-slate-500 w-[85px] shrink-0 text-right leading-tight">{label}</span>
-            <div className="flex-1">
-                {children}
-            </div>
+    const Field = ({ label, children }) => (
+        <div className="flex items-center gap-2 px-3 mb-2 last:mb-3">
+            <span className="text-[11px] font-medium text-slate-400 w-[80px] shrink-0 text-right">{label}</span>
+            <div className="flex-1 min-w-0">{children}</div>
         </div>
     );
 
-    const InputField = (props) => (
+    const Input = (props) => (
         <input
-            className="w-full bg-white border border-slate-200 rounded-sm px-2 py-1 text-xs text-slate-800 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 focus:outline-none placeholder:text-slate-300"
+            className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-[12px] text-slate-700 transition-all duration-150 focus:border-[#2563EB] focus:ring-1 focus:ring-blue-100 focus:outline-none placeholder-slate-300"
             {...props}
         />
     );
 
-    const CheckboxField = (props) => (
+    const Checkbox = (props) => (
         <div className="flex items-center h-6">
             <input
                 type="checkbox"
-                className="w-4 h-4 rounded-sm border-slate-300 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
+                className="w-3.5 h-3.5 rounded border-slate-300 text-[#2563EB] cursor-pointer accent-[#2563EB]"
                 {...props}
             />
         </div>
     );
 
-    const SelectField = ({ children, ...props }) => (
+    const Select = ({ children, ...props }) => (
         <select
-            className="w-full bg-white border border-slate-200 rounded-sm px-1.5 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none cursor-pointer"
+            className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-[12px] text-slate-700 focus:border-[#2563EB] focus:outline-none cursor-pointer"
             {...props}
-        >
-            {children}
-        </select>
+        >{children}</select>
     );
 
     const renderSelectionPanel = () => {
         if (!model) {
             return (
-                <div className="flex flex-col items-center justify-center p-8 gap-3 opacity-40">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400">
+                <div className="flex flex-col items-center justify-center p-8 gap-2 opacity-40">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-300">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="12" y1="8" x2="12" y2="12" />
                         <line x1="12" y1="16" x2="12.01" y2="16" />
                     </svg>
-                    <p className="text-[11px] font-medium text-slate-500 text-center">Nenhum modelo ativo</p>
+                    <p className="text-[11px] text-slate-400 text-center">Nenhum modelo ativo</p>
                 </div>
             );
         }
 
         if (!selectedObj) {
             return (
-                <div className="animate-in fade-in duration-300">
-                    <PropertyHeader>Informações do Modelo</PropertyHeader>
-                    <PropertyRow label="Nome">
-                        <InputField
-                            value={model.name}
-                            onChange={(e) => updateModelInfo('name', e.target.value)}
-                        />
-                    </PropertyRow>
-                    <PropertyRow label="Versão">
-                        <span className="text-[11px] font-mono text-slate-400 px-2">{model.version}</span>
-                    </PropertyRow>
-                    <PropertyRow label="Autor(es)">
-                        <InputField
-                            value={model.author}
-                            onChange={(e) => updateModelInfo('author', e.target.value)}
-                            placeholder="Nome do autor"
-                        />
-                    </PropertyRow>
-                    <PropertyRow label="Observações">
+                <div>
+                    <SectionHeader>Informações do Modelo</SectionHeader>
+                    <Field label="Nome">
+                        <Input value={model.name} onChange={(e) => updateModelInfo('name', e.target.value)} />
+                    </Field>
+                    <Field label="Versão">
+                        <span className="text-[11px] font-mono text-slate-300 px-2 py-0.5">{model.version}</span>
+                    </Field>
+                    <Field label="Autor(es)">
+                        <Input value={model.author} onChange={(e) => updateModelInfo('author', e.target.value)} placeholder="Nome do autor" />
+                    </Field>
+                    <Field label="Observações">
                         <textarea
-                            className="w-full bg-white border border-slate-200 rounded-sm px-2 py-1.5 text-xs text-slate-800 min-h-[60px] resize-none focus:border-blue-500 focus:outline-none placeholder:text-slate-300"
+                            className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-[12px] text-slate-700 min-h-[50px] resize-none focus:border-[#2563EB] focus:outline-none placeholder-slate-300"
                             value={model.notes || ''}
                             onChange={(e) => updateModelInfo('notes', e.target.value)}
                             placeholder="Notas do projeto..."
                         />
-                    </PropertyRow>
+                    </Field>
 
-                    <PropertyHeader>Resumo de Objetos</PropertyHeader>
-                    <div className="px-3 pb-4">
-                        <div className="bg-white border border-slate-100 rounded p-2 shadow-sm">
-                            {(() => {
-                                const counts = {};
-                                Object.values(model.objects).forEach(obj => {
-                                    counts[obj.type] = (counts[obj.type] || 0) + 1;
-                                });
-                                const labels = {
-                                    entity: 'Entidades', relationship: 'Relacionamentos',
-                                    attribute: 'Atributos', specialization: 'Especializações',
-                                    text: 'Textos', associative: 'Associativas'
-                                };
-                                const entries = Object.entries(counts);
-                                if (entries.length === 0) return <p className="text-[11px] text-slate-400 text-center py-2 italic text-muted">Vazio</p>;
+                    <SectionHeader>Resumo de Objetos</SectionHeader>
+                    <div className="px-3 pb-3">
+                        {(() => {
+                            const counts = {};
+                            Object.values(model.objects).forEach(obj => {
+                                counts[obj.type] = (counts[obj.type] || 0) + 1;
+                            });
+                            const labels = {
+                                entity: 'Entidades', relationship: 'Relacionamentos',
+                                attribute: 'Atributos', specialization: 'Especializações',
+                                text: 'Textos', associative: 'Associativas'
+                            };
+                            const entries = Object.entries(counts);
+                            if (entries.length === 0) return <p className="text-[11px] text-slate-300 text-center py-2 italic">Vazio</p>;
 
-                                return entries.map(([type, count]) => (
-                                    <div key={type} className="flex justify-between items-center py-1 border-b border-slate-50 last:border-0">
-                                        <span className="text-[11px] text-slate-500">{labels[type] || type}</span>
-                                        <span className="text-[11px] font-bold text-slate-700">{count}</span>
-                                    </div>
-                                ));
-                            })()}
-                        </div>
+                            return entries.map(([type, count]) => (
+                                <div key={type} className="flex justify-between items-center py-1 border-b border-slate-50 last:border-0">
+                                    <span className="text-[11px] text-slate-400">{labels[type] || type}</span>
+                                    <span className="text-[11px] font-semibold text-slate-600">{count}</span>
+                                </div>
+                            ));
+                        })()}
                     </div>
                 </div>
             );
@@ -141,127 +129,92 @@ export default function PropertyPanel() {
         }[selectedObj.type] || 'Ligação';
 
         return (
-            <div className="animate-in slide-in-from-right-2 fade-in duration-300">
-                <PropertyHeader>{typeLabel}</PropertyHeader>
+            <div>
+                <SectionHeader>{typeLabel}</SectionHeader>
 
                 {(selectedObj.type !== 'text' && !selectedObj.from) && (
-                    <PropertyRow label="Nome">
-                        <InputField
-                            value={selectedObj.name || ''}
-                            onChange={(e) => handleChange('name', e.target.value)}
-                        />
-                    </PropertyRow>
+                    <Field label="Nome">
+                        <Input value={selectedObj.name || ''} onChange={(e) => handleChange('name', e.target.value)} />
+                    </Field>
                 )}
 
                 {selectedObj.type === 'text' && (
-                    <PropertyRow label="Texto">
-                        <InputField
-                            value={selectedObj.text || ''}
-                            onChange={(e) => handleChange('text', e.target.value)}
-                        />
-                    </PropertyRow>
+                    <Field label="Texto">
+                        <Input value={selectedObj.text || ''} onChange={(e) => handleChange('text', e.target.value)} />
+                    </Field>
                 )}
 
-                {/* Specific Properties */}
                 {selectedObj.type === 'entity' && (
                     <>
-                        <PropertyHeader>Propriedades</PropertyHeader>
-                        <PropertyRow label="Fraca">
-                            <CheckboxField
-                                checked={selectedObj.weak || false}
-                                onChange={(e) => handleChange('weak', e.target.checked)}
-                            />
-                        </PropertyRow>
+                        <SectionHeader>Propriedades</SectionHeader>
+                        <Field label="Fraca">
+                            <Checkbox checked={selectedObj.weak || false} onChange={(e) => handleChange('weak', e.target.checked)} />
+                        </Field>
                     </>
                 )}
 
                 {selectedObj.type === 'attribute' && (
                     <>
-                        <PropertyHeader>Propriedades</PropertyHeader>
-                        <PropertyRow label="Identificador">
-                            <CheckboxField checked={selectedObj.identifier || false} onChange={(e) => handleChange('identifier', e.target.checked)} />
-                        </PropertyRow>
-                        <PropertyRow label="Multivalorado">
-                            <CheckboxField checked={selectedObj.multiValued || false} onChange={(e) => handleChange('multiValued', e.target.checked)} />
-                        </PropertyRow>
-                        <PropertyRow label="Opcional">
-                            <CheckboxField checked={selectedObj.optional || false} onChange={(e) => handleChange('optional', e.target.checked)} />
-                        </PropertyRow>
-                        <PropertyRow label="Composto">
-                            <CheckboxField checked={selectedObj.composed || false} onChange={(e) => handleChange('composed', e.target.checked)} />
-                        </PropertyRow>
-                        <PropertyRow label="Tipo de Dado">
-                            <InputField
-                                value={selectedObj.dataType || ''}
-                                onChange={(e) => handleChange('dataType', e.target.value)}
-                                placeholder="ex: VARCHAR(50)"
-                            />
-                        </PropertyRow>
+                        <SectionHeader>Propriedades</SectionHeader>
+                        <Field label="Identificador"><Checkbox checked={selectedObj.identifier || false} onChange={(e) => handleChange('identifier', e.target.checked)} /></Field>
+                        <Field label="Multivalorado"><Checkbox checked={selectedObj.multiValued || false} onChange={(e) => handleChange('multiValued', e.target.checked)} /></Field>
+                        <Field label="Opcional"><Checkbox checked={selectedObj.optional || false} onChange={(e) => handleChange('optional', e.target.checked)} /></Field>
+                        <Field label="Composto"><Checkbox checked={selectedObj.composed || false} onChange={(e) => handleChange('composed', e.target.checked)} /></Field>
+                        <Field label="Tipo de Dado">
+                            <Input value={selectedObj.dataType || ''} onChange={(e) => handleChange('dataType', e.target.value)} placeholder="ex: VARCHAR(50)" />
+                        </Field>
                     </>
                 )}
 
                 {selectedObj.from && selectedObj.to && (
                     <>
-                        <PropertyHeader>Ligação (Cardinalidade)</PropertyHeader>
-                        <PropertyRow label="Card. Origem">
-                            <SelectField value={selectedObj.cardFrom || ''} onChange={(e) => handleChange('cardFrom', e.target.value)}>
+                        <SectionHeader>Ligação (Cardinalidade)</SectionHeader>
+                        <Field label="Card. Origem">
+                            <Select value={selectedObj.cardFrom || ''} onChange={(e) => handleChange('cardFrom', e.target.value)}>
                                 <option value="">Nenhuma</option>
                                 <option value="0,1">0,1</option>
                                 <option value="1,1">1,1</option>
                                 <option value="0,n">0,n</option>
                                 <option value="1,n">1,n</option>
-                            </SelectField>
-                        </PropertyRow>
-                        <PropertyRow label="Card. Destino">
-                            <SelectField value={selectedObj.cardTo || ''} onChange={(e) => handleChange('cardTo', e.target.value)}>
+                            </Select>
+                        </Field>
+                        <Field label="Card. Destino">
+                            <Select value={selectedObj.cardTo || ''} onChange={(e) => handleChange('cardTo', e.target.value)}>
                                 <option value="">Nenhuma</option>
                                 <option value="0,1">0,1</option>
                                 <option value="1,1">1,1</option>
                                 <option value="0,n">0,n</option>
                                 <option value="1,n">1,n</option>
-                            </SelectField>
-                        </PropertyRow>
-                        <PropertyRow label="Papel Origem">
-                            <InputField
-                                value={selectedObj.roleFrom || ''}
-                                onChange={(e) => handleChange('roleFrom', e.target.value)}
-                                placeholder="Opcional"
-                            />
-                        </PropertyRow>
-                        <PropertyRow label="Papel Destino">
-                            <InputField
-                                value={selectedObj.roleTo || ''}
-                                onChange={(e) => handleChange('roleTo', e.target.value)}
-                                placeholder="Opcional"
-                            />
-                        </PropertyRow>
+                            </Select>
+                        </Field>
+                        <Field label="Papel Origem">
+                            <Input value={selectedObj.roleFrom || ''} onChange={(e) => handleChange('roleFrom', e.target.value)} placeholder="Opcional" />
+                        </Field>
+                        <Field label="Papel Destino">
+                            <Input value={selectedObj.roleTo || ''} onChange={(e) => handleChange('roleTo', e.target.value)} placeholder="Opcional" />
+                        </Field>
                     </>
                 )}
 
                 {selectedObj.type === 'specialization' && (
                     <>
-                        <PropertyHeader>Restrições</PropertyHeader>
-                        <PropertyRow label="Totalidade (T)">
-                            <CheckboxField checked={selectedObj.total || false} onChange={(e) => handleChange('total', e.target.checked)} />
-                        </PropertyRow>
-                        <PropertyRow label="Disjunta (d)">
-                            <CheckboxField checked={selectedObj.disjoint !== false} onChange={(e) => handleChange('disjoint', e.target.checked)} />
-                        </PropertyRow>
+                        <SectionHeader>Restrições</SectionHeader>
+                        <Field label="Totalidade (T)"><Checkbox checked={selectedObj.total || false} onChange={(e) => handleChange('total', e.target.checked)} /></Field>
+                        <Field label="Disjunta (d)"><Checkbox checked={selectedObj.disjoint !== false} onChange={(e) => handleChange('disjoint', e.target.checked)} /></Field>
                     </>
                 )}
 
-                {/* Geometry Info */}
                 {!selectedObj.from && selectedObj.type !== 'table' && (
                     <>
-                        <PropertyHeader>Posicionamento</PropertyHeader>
-                        <div className="grid grid-cols-2 gap-x-1 px-3 mb-4">
-                            <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-bold text-slate-300 w-4">X</span>
-                                <InputField type="number" value={Math.round(selectedObj.x)} onChange={(e) => handleChange('x', Number(e.target.value))} />
+                        <SectionHeader>Posicionamento</SectionHeader>
+                        <div className="grid grid-cols-2 gap-x-1 px-3 mb-3">
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-slate-300 w-3">X</span>
+                                <Input type="number" value={Math.round(selectedObj.x)} onChange={(e) => handleChange('x', Number(e.target.value))} />
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-bold text-slate-300 w-4">Y</span>
-                                <InputField type="number" value={Math.round(selectedObj.y)} onChange={(e) => handleChange('y', Number(e.target.value))} />
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-slate-300 w-3">Y</span>
+                                <Input type="number" value={Math.round(selectedObj.y)} onChange={(e) => handleChange('y', Number(e.target.value))} />
                             </div>
                         </div>
                     </>
@@ -271,43 +224,45 @@ export default function PropertyPanel() {
     };
 
     return (
-        <aside className="w-[300px] bg-white border-l border-slate-200 flex flex-col shrink-0 overflow-hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] z-10 h-full">
-            {/* Custom Tab Headings - Segmented Style */}
-            <div className="p-2.5 shrink-0 bg-slate-50/50">
-                <div className="bg-slate-200/60 p-1 rounded-md flex">
+        <aside className="w-[280px] bg-white border-l border-slate-200 flex flex-col shrink-0 overflow-hidden z-10 h-full">
+            {/* Tabs */}
+            <div className="px-2 pt-2 pb-1.5 shrink-0 border-b border-slate-100">
+                <div className="bg-slate-100 p-[2px] rounded-md flex">
                     <button
                         onClick={() => setActiveTab('selection')}
-                        className={`flex-1 py-1.5 text-[11px] font-bold rounded transition-all duration-200 shadow-sm ${activeTab === 'selection'
-                                ? 'bg-white text-blue-600 shadow-sm'
-                                : 'text-slate-500 hover:text-slate-700'
-                            }`}
+                        className={`flex-1 py-1 text-[11px] font-semibold rounded transition-all duration-150 cursor-pointer ${
+                            activeTab === 'selection'
+                                ? 'bg-white text-[#2563EB] shadow-sm'
+                                : 'text-slate-400 hover:text-slate-600'
+                        }`}
                     >
                         Propriedades
                     </button>
                     <button
                         onClick={() => setActiveTab('hidden')}
-                        className={`flex-1 py-1.5 text-[11px] font-bold rounded transition-all duration-200 ${activeTab === 'hidden'
-                                ? 'bg-white text-blue-600 shadow-sm'
-                                : 'text-slate-500 hover:text-slate-700'
-                            }`}
+                        className={`flex-1 py-1 text-[11px] font-semibold rounded transition-all duration-150 cursor-pointer ${
+                            activeTab === 'hidden'
+                                ? 'bg-white text-[#2563EB] shadow-sm'
+                                : 'text-slate-400 hover:text-slate-600'
+                        }`}
                     >
                         Atr. Ocultos
                     </button>
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto overflow-x-hidden border-t border-slate-100">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
                 {activeTab === 'selection' ? renderSelectionPanel() : (
-                    <div className="flex flex-col items-center justify-center p-12 opacity-30">
-                        <p className="text-[11px] text-slate-500 italic">Nenhum oculto</p>
+                    <div className="flex flex-col items-center justify-center p-10 opacity-30">
+                        <p className="text-[11px] text-slate-400 italic">Nenhum oculto</p>
                     </div>
                 )}
             </div>
 
-            {/* Selection info footer */}
+            {/* Selection footer */}
             {selectedIds.length > 0 && (
-                <div className="p-3 bg-blue-50/30 border-t border-slate-100 shrink-0">
-                    <span className="text-[10px] font-bold text-blue-500 uppercase tracking-tight">
+                <div className="px-3 py-2 bg-blue-50/50 border-t border-slate-100 shrink-0">
+                    <span className="text-[10px] font-semibold text-[#2563EB] uppercase tracking-wider">
                         {selectedIds.length} {selectedIds.length === 1 ? 'objeto selecionado' : 'objetos selecionados'}
                     </span>
                 </div>

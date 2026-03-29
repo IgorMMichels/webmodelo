@@ -17,10 +17,7 @@ export default function ERRelationship({ obj, selected, onMouseDown, onDoubleCli
             {/* Main diamond */}
             <polygon
                 points={points}
-                fill="#FFFFFF"
-                stroke={selected ? '#2563EB' : '#111'}
-                strokeWidth={selected ? 2 : 1.2}
-                strokeLinejoin="round"
+                className={`fill-white ${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800 stroke-[1.2px]'} stroke-linejoin-round`}
             />
 
             {/* Relationship name */}
@@ -28,10 +25,7 @@ export default function ERRelationship({ obj, selected, onMouseDown, onDoubleCli
                 x={cx}
                 y={cy + 4}
                 textAnchor="middle"
-                fill="#111"
-                fontSize={12}
-                fontWeight={600}
-                fontFamily="'Inter', 'Segoe UI', sans-serif"
+                className="fill-slate-800 text-xs font-semibold font-sans"
             >
                 {obj.name}
             </text>

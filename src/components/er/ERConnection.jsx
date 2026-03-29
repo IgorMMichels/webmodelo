@@ -39,8 +39,7 @@ export default function ERConnection({ conn, from, to, selected, lineIndex = 0 }
             <line
                 x1={from.x} y1={from.y}
                 x2={to.x} y2={to.y}
-                stroke={selected ? '#2563EB' : '#111'}
-                strokeWidth={selected ? 2 : 1}
+                className={`${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800 stroke-[1.2px]'}`}
             />
 
             {labelFromData && (
@@ -48,13 +47,10 @@ export default function ERConnection({ conn, from, to, selected, lineIndex = 0 }
                     x={fromLabelX + cnx * margin}
                     y={fromLabelY + cny * margin + 4}
                     textAnchor="middle"
-                    fontSize={11}
-                    fontWeight={600}
-                    fill={selected ? '#2563EB' : '#222'}
-                    fontFamily="'Inter', sans-serif"
+                    className={`text-[11px] font-semibold font-sans ${selected ? 'fill-blue-600' : 'fill-slate-800'}`}
                     filter="url(#label-bg)"
                 >
-                    {labelFromData.role && <tspan x={fromLabelX + cnx * margin} dy="-0.2em" fontSize={10} fontWeight={400} fill="#64748B">{labelFromData.role}</tspan>}
+                    {labelFromData.role && <tspan x={fromLabelX + cnx * margin} dy="-0.2em" className="text-[10px] font-normal fill-slate-500">{labelFromData.role}</tspan>}
                     <tspan x={fromLabelX + cnx * margin} dy={labelFromData.role ? "1.1em" : "0"}>{labelFromData.card}</tspan>
                 </text>
             )}
@@ -64,13 +60,10 @@ export default function ERConnection({ conn, from, to, selected, lineIndex = 0 }
                     x={toLabelX + cnx * margin}
                     y={toLabelY + cny * margin + 4}
                     textAnchor="middle"
-                    fontSize={11}
-                    fontWeight={600}
-                    fill={selected ? '#2563EB' : '#222'}
-                    fontFamily="'Inter', sans-serif"
+                    className={`text-[11px] font-semibold font-sans ${selected ? 'fill-blue-600' : 'fill-slate-800'}`}
                     filter="url(#label-bg)"
                 >
-                    {labelToData.role && <tspan x={toLabelX + cnx * margin} dy="-0.2em" fontSize={10} fontWeight={400} fill="#64748B">{labelToData.role}</tspan>}
+                    {labelToData.role && <tspan x={toLabelX + cnx * margin} dy="-0.2em" className="text-[10px] font-normal fill-slate-500">{labelToData.role}</tspan>}
                     <tspan x={toLabelX + cnx * margin} dy={labelToData.role ? "1.1em" : "0"}>{labelToData.card}</tspan>
                 </text>
             )}

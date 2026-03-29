@@ -21,10 +21,7 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
             {/* Main triangle */}
             <polygon
                 points={points}
-                fill="#FFFFFF"
-                stroke={selected ? '#2563EB' : '#111'}
-                strokeWidth={selected ? 2 : 1.2}
-                strokeLinejoin="round"
+                className={`fill-white ${selected ? 'stroke-blue-600 stroke-2' : 'stroke-slate-800 stroke-[1.2px]'} stroke-linejoin-round`}
             />
 
             {/* Total indicator: thick line at base */}
@@ -32,8 +29,7 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
                 <line
                     x1={cx - halfBase * 0.7} y1={bottom}
                     x2={cx + halfBase * 0.7} y2={bottom}
-                    stroke={selected ? '#2563EB' : '#111'}
-                    strokeWidth={3}
+                    className={`${selected ? 'stroke-blue-600' : 'stroke-slate-800'} stroke-[3px]`}
                 />
             )}
 
@@ -42,10 +38,7 @@ export default function ERSpecialization({ obj, selected, onMouseDown, onDoubleC
                 x={cx}
                 y={bottom - obj.size * 0.3 + 2}
                 textAnchor="middle"
-                fontSize={11}
-                fill="#111"
-                fontWeight={600}
-                fontFamily="'Inter', 'Segoe UI', sans-serif"
+                className="fill-slate-800 text-[11px] font-semibold font-sans"
             >
                 {obj.name || label}
             </text>

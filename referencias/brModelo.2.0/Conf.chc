@@ -9,10 +9,10 @@
       <ExibirLog Valor="False"/>
     </Configuracoes>
     <Arquivos>
-      <Arq01 Valor="C:\USERS\IGOR\DOWNLOADS\WEBMODELO\CONCEITUAL_1.BRM"/>
-      <Arq02 Valor=""/>
-      <Arq03 Valor=""/>
-      <Arq04 Valor=""/>
+      <Arq01 Valor="C:\USERS\IGOR\DOWNLOADS\BBBBB.BRM"/>
+      <Arq02 Valor="C:\USERS\IGOR\DOWNLOADS\CONCEITUAL_1231312.BRM"/>
+      <Arq03 Valor="C:\USERS\IGOR\DOWNLOADS\WEBMODELO\CONCEITUAL_1231312.BRM"/>
+      <Arq04 Valor="C:\USERS\IGOR\DOWNLOADS\WEBMODELO\CONCEITUAL_1.BRM"/>
       <Arq05 Valor=""/>
     </Arquivos>
   </CONFIGURACAO>

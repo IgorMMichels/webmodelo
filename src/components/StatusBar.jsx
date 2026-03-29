@@ -1,61 +1,59 @@
 import useModelStore from '../stores/useModelStore';
 
 export default function StatusBar() {
-    const { activeModelId, models, selectedIds, zoom, activeTool, isDirty } = useModelStore();
+    const { activeModelId, models, activeTool, selectedIds } = useModelStore();
     const model = activeModelId ? models[activeModelId] : null;
+    const zoom = useModelStore.getState().zoom ?? 100;
 
-    const toolNames = {
-        select: 'Selecionar',
-        entity: 'Criar Entidade',
-        relationship: 'Criar Relacionamento',
-        attribute: 'Criar Atributo',
-        attributeId: 'Criar Atrib. Identificador',
-        attributeMulti: 'Criar Atrib. Multivalorado',
-        attributeOpt: 'Criar Atrib. Opcional',
-        attributeComp: 'Criar Atrib. Composto',
-        specialization: 'Criar Especialização',
-        connection: 'Criar Ligação',
-        selfRelation: 'Criar Auto-Relação',
-        associative: 'Criar Ent. Associativa',
-        text: 'Criar Texto',
-        line: 'Criar Linha',
-    };
+    if (!model) return null;
 
-    const objectCount = model ? Object.keys(model.objects).length : 0;
+    const objCount = Object.keys(model.objects).length;
+    const isModified = model.modified;
+    const toolName = activeTool ? activeTool.charAt(0).toUpperCase() + activeTool.slice(1) : 'Selecionar';
+
+    const Segment = ({ children }) => (
+        <div className="flex items-center gap-1.5 px-2.5 h-full border-r border-slate-100 text-[10px]">
+            {children}
+        </div>
+    );
 
     return (
-        <div className="flex items-center h-[24px] bg-slate-100 border-t border-slate-300 px-3 gap-4 text-[11px] text-slate-500 shrink-0 select-none z-10 w-full font-sans">
-            <div className="flex items-center gap-1.5">
-                <span className={`w-[6px] h-[6px] rounded-full ${isDirty ? 'bg-amber-500' : 'bg-[#2563EB]'}`} />
-                {isDirty ? 'Modificado' : 'Salvo'}
-            </div>
+        <footer className="flex items-center h-[22px] bg-white border-t border-slate-200 px-1 text-slate-400 font-medium shrink-0 z-10 select-none">
+            <Segment>
+                <div className={`w-[5px] h-[5px] rounded-full shrink-0 ${isModified ? 'bg-amber-400' : 'bg-emerald-400'}`} />
+                <span className={`text-[10px] ${isModified ? 'text-amber-500' : 'text-emerald-500'}`}>
+                    {isModified ? 'Modificado' : 'Salvo'}
+                </span>
+            </Segment>
 
-            {model && (
-                <>
-                    <div className="flex items-center gap-1.5 border-l border-slate-300 pl-4">
-                        <span className="font-semibold text-slate-600 uppercase text-[9px]">Modelo:</span> {model.type === 'conceptual' ? 'Conceitual' : 'Lógico'}
-                    </div>
-                    <div className="flex items-center gap-1.5 border-l border-slate-300 pl-4">
-                        <span className="font-semibold text-slate-600 uppercase text-[9px]">Objetos:</span> {objectCount}
-                    </div>
-                </>
-            )}
+            <Segment>
+                <span className="text-slate-300 text-[10px]">MODELO:</span>
+                <span className="text-slate-500 text-[10px]">{model.type === 'conceptual' ? 'Conceitual' : 'Lógico'}</span>
+            </Segment>
 
-            <div className="flex items-center gap-1.5 border-l border-slate-300 pl-4">
-                <span className="font-semibold text-slate-600 uppercase text-[9px]">Ferramenta:</span> {toolNames[activeTool] || activeTool}
-            </div>
+            <Segment>
+                <span className="text-slate-300 text-[10px]">OBJETOS:</span>
+                <span className="text-slate-500 text-[10px] font-semibold">{objCount}</span>
+            </Segment>
+
+            <Segment>
+                <span className="text-slate-300 text-[10px]">FERRAMENTA:</span>
+                <span className="text-slate-500 text-[10px]">{toolName}</span>
+            </Segment>
 
             {selectedIds.length > 0 && (
-                <div className="flex items-center gap-1.5 border-l border-slate-300 pl-4">
-                    <span className="font-semibold text-[#2563EB] uppercase text-[9px]">Seleção:</span> {selectedIds.length} objeto{selectedIds.length > 1 ? 's' : ''}
-                </div>
+                <Segment>
+                    <span className="text-slate-300 text-[10px]">SELEÇÃO:</span>
+                    <span className="text-[#2563EB] text-[10px] font-semibold">{selectedIds.length}</span>
+                </Segment>
             )}
 
             <div className="flex-1" />
 
-            <div className="flex items-center gap-1.5 font-medium">
-                Zoom: {Math.round(zoom * 100)}%
+            <div className="flex items-center gap-1.5 px-2.5 h-full text-[10px]">
+                <span className="text-slate-300">Zoom:</span>
+                <span className="text-slate-500 font-semibold">{zoom}%</span>
             </div>
-        </div>
+        </footer>
     );
 }

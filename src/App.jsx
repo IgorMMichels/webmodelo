@@ -99,7 +99,7 @@ export default function App() {
         href="https://github.com/IgorMMichels/webmodelo.git"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-6 right-6 p-2.5 bg-white/80 backdrop-blur-md border border-slate-200 text-slate-600 rounded-full shadow-lg hover:bg-white hover:text-purple-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-50 flex items-center justify-center cursor-pointer group"
+        className="absolute bottom-6 right-6 p-2.5 bg-white/90 backdrop-blur-md border border-slate-200 text-slate-400 rounded-full shadow-lg hover:bg-white hover:text-[#2563EB] hover:shadow-xl hover:border-blue-200 hover:-translate-y-0.5 transition-all duration-300 z-50 flex items-center justify-center cursor-pointer animate-gentle-bounce"
         title="Ver no GitHub"
       >
         <Github size={18} />

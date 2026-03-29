@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import useModelStore from '../stores/useModelStore';
 import ConvertDialog from './ConvertDialog';
 import {
-    FileText, FilePlus, FolderOpen, Save, ChevronDown
+    FileText, FilePlus, FolderOpen, Save, X
 } from 'lucide-react';
 
 const menus = [
@@ -16,7 +16,7 @@ const menus = [
             { label: 'Salvar (.brM)', action: 'save', shortcut: 'Ctrl+S', icon: Save },
             { label: 'Salvar Como...', action: 'saveAs', icon: Save },
             { type: 'separator' },
-            { label: 'Fechar Modelo', action: 'close' },
+            { label: 'Fechar Modelo', action: 'close', icon: X },
         ],
     },
     {
@@ -39,7 +39,7 @@ const menus = [
             { label: 'Generalização/Especialização', action: 'tool:specialization' },
             { label: 'Ligação', action: 'tool:connection' },
             { type: 'separator' },
-            { label: '🔄 Converter para Modelo Lógico', action: 'convertLogical' },
+            { label: 'Converter para Modelo Lógico', action: 'convertLogical' },
         ],
     },
     {
@@ -48,7 +48,7 @@ const menus = [
             { label: 'Tabela', action: 'tool:table' },
             { label: 'Conexão', action: 'tool:logicalConnection' },
             { type: 'separator' },
-            { label: '📄 Gerar Esquema Físico (SQL)', action: 'convertPhysical' },
+            { label: 'Gerar Esquema Físico (SQL)', action: 'convertPhysical' },
         ],
     },
     {
@@ -61,7 +61,7 @@ const menus = [
 
 export default function MenuBar() {
     const [openMenu, setOpenMenu] = useState(null);
-    const [convertDialog, setConvertDialog] = useState(null); // 'logical' | 'physical' | null
+    const [convertDialog, setConvertDialog] = useState(null);
     const menuRef = useRef(null);
     const { createModel, saveToFile, openFile, closeModel, activeModelId,
         undo, redo, deleteSelected, setActiveTool, getActiveModel, setView } = useModelStore();
@@ -108,39 +108,50 @@ export default function MenuBar() {
     };
 
     return (
-        <div className="flex items-center h-[32px] bg-slate-100 border-b border-slate-300 px-2 gap-1 shrink-0 z-40 relative" ref={menuRef}>
-            <div
-                className="flex items-center gap-2 pr-3 mr-2 border-r border-slate-300 cursor-pointer hover:bg-slate-200 hover:text-slate-900 text-slate-800 rounded px-2 py-1 transition-colors"
+        <div className="flex items-center h-[28px] bg-slate-50 border-b border-slate-200 px-1.5 gap-0 shrink-0 z-40 relative" ref={menuRef}>
+            {/* Brand */}
+            <button
+                className="flex items-center gap-1.5 px-2 h-full cursor-pointer transition-colors duration-150 hover:bg-white rounded-sm group"
                 onClick={() => setView('dashboard')}
                 title="Ir para o Painel"
-                style={{ cursor: 'pointer' }}
             >
-                <FileText size={16} className="text-[#2563EB]" />
-                <span className="font-bold text-[13px] tracking-tight">Web<span className="text-[#2563EB]">Modelo</span></span>
-            </div>
+                <FileText size={13} className="text-[#2563EB]" strokeWidth={2} />
+                <span className="font-bold text-[12px] tracking-tight text-slate-700">Web<span className="text-[#2563EB]">Modelo</span></span>
+            </button>
+
+            <div className="w-px h-3.5 bg-slate-200 mx-1 shrink-0" />
+
+            {/* Menu buttons */}
             {menus.map((menu, i) => (
                 <div key={i} className="relative">
                     <button
-                        className={`relative px-3 py-1 text-xs rounded-sm cursor-pointer transition-colors duration-150 border-none font-sans ${openMenu === i ? 'bg-[#2563EB] text-white shadow-sm font-medium' : 'text-slate-600 bg-transparent hover:bg-slate-200 hover:text-slate-900'}`}
+                        className={`px-2 h-[22px] text-[12px] rounded-sm cursor-pointer transition-all duration-100 font-medium ${
+                            openMenu === i
+                                ? 'bg-slate-200/80 text-slate-700'
+                                : 'text-slate-500 hover:bg-slate-200/50 hover:text-slate-700'
+                        }`}
                         onClick={() => setOpenMenu(openMenu === i ? null : i)}
                         onMouseEnter={() => openMenu !== null && setOpenMenu(i)}
                     >
                         {menu.label}
                     </button>
                     {openMenu === i && (
-                        <div className="absolute top-full left-0 min-w-[220px] bg-white border border-slate-200 rounded shadow-lg p-1 z-[1000] mt-1">
+                        <div className="absolute top-full left-0 min-w-[240px] bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-[1000] mt-0.5"
+                             style={{ animation: 'fadeSlideIn 0.12s ease-out' }}>
                             {menu.items.map((item, j) => (
                                 item.type === 'separator' ? (
-                                    <div key={j} className="h-px bg-slate-100 my-1" />
+                                    <div key={j} className="h-px bg-slate-100 my-0.5 mx-2" />
                                 ) : (
                                     <button
                                         key={j}
-                                        className="flex items-center gap-3 w-full text-left px-3 py-2 text-xs text-slate-600 rounded-sm cursor-pointer hover:bg-slate-50 hover:text-[#2563EB] transition-colors"
+                                        className="flex items-center gap-2 w-full text-left px-3 py-[5px] text-[12px] text-slate-600 cursor-pointer hover:bg-slate-50 hover:text-slate-800 transition-colors duration-100"
                                         onClick={() => handleAction(item.action)}
                                     >
-                                        {item.icon && <item.icon size={14} className="opacity-80" />}
-                                        <span className={!item.icon ? "ml-[26px]" : ""}>{item.label}</span>
-                                        {item.shortcut && <span className="ml-auto text-[10px] text-slate-400 font-mono bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100">{item.shortcut}</span>}
+                                        {item.icon && <item.icon size={13} className="text-slate-400 shrink-0" strokeWidth={1.8} />}
+                                        <span className={!item.icon ? 'ml-[21px]' : ''}>{item.label}</span>
+                                        {item.shortcut && (
+                                            <span className="ml-auto text-[10px] text-slate-300 font-mono pl-4">{item.shortcut}</span>
+                                        )}
                                     </button>
                                 )
                             ))}
